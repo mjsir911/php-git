@@ -1,6 +1,6 @@
 <?php
 namespace git\oid {
-	function fromstr(string $hex): mixed {}
+	function fromstr(string $sha): mixed {}
 	function tostr(mixed $oid): string {}
 }
 ?>
