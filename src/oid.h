@@ -1,11 +1,13 @@
 #ifndef PHP_GIT2_OID
 #define PHP_GIT2_OID
 #include <php.h>
+#include <git2/oid.h>
 
 #define le_git_oid_name "Git OID"
 extern int le_git_oid;
 
 extern void php_git2_oid_free(zend_resource *rsrc);
+extern git_oid* php_git2_oid_alloc(void);
 
 #include "oid_arginfo.h"
 

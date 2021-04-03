@@ -6,7 +6,7 @@
 int le_git_oid;
 
 PHP_FUNCTION(git_oid_fromstr) {
-	git_oid *oid = emalloc(sizeof(git_oid));
+	git_oid *oid = php_git2_oid_alloc();
 	zend_string *sha;
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "S", &sha) == FAILURE)
 		RETURN_THROWS();
@@ -34,6 +34,10 @@ PHP_FUNCTION(git_oid_tostr) {
 	git_oid_tostr(buf, len, oid);
 
 	RETURN_STRING(buf);
+}
+
+git_oid* php_git2_oid_alloc(void) {
+	return emalloc(sizeof(git_oid));
 }
 
 void php_git2_oid_free(zend_resource *rsrc) {
