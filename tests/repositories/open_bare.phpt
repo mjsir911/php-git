@@ -12,5 +12,5 @@ if (!extension_loaded('git2')) {
 $repo = git_repository_open_bare("./tests/repo.git");
 var_dump($repo);
 ?>
---EXPECT--
-resource(4) of type (Git Repository)
+--EXPECTF--
+resource(%d) of type (Git Repository)

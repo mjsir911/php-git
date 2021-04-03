@@ -21,6 +21,6 @@ var_dump($oid);
 $shortsha = git_oid_tostr($oid, 8);
 echo $shortsha;
 ?>
---EXPECT--
-resource(4) of type (Git OID)
+--EXPECTF--
+resource(%d) of type (Git OID)
 4a202b34

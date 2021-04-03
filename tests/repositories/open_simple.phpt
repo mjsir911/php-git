@@ -14,8 +14,8 @@ localRepo($clonepath);
 $repo = git_repository_open($clonepath);
 var_dump($repo);
 ?>
---EXPECT--
-resource(6) of type (Git Repository)
+--EXPECTF--
+resource(%d) of type (Git Repository)
 --CLEAN--
 <?php
 require "tests/utils.inc";
