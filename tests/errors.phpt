@@ -12,5 +12,5 @@ if (!extension_loaded('git2')) {
 # information, libgit2 keeps some data in thread-local storage:
 git_repository_open("/dev/null")
 ?>
---EXPECT--
-Warning: git_repository_open(): could not find repository from '/dev/null' in /home/msirabella/Documents/projects/php-git/tests/errors.php on line 4
+--EXPECTF--
+Warning: git_repository_open(): could not find repository from '/dev/null' in %s on line 4
