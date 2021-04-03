@@ -4,7 +4,7 @@ PHP_ARG_ENABLE(git2, Whether to enable the "git2" extension,
 if test $PHP_GIT2 != "no"; then
 	PHP_SUBST(GIT2_SHARED_LIBADD)
 
-	PHP_NEW_EXTENSION(git2, php_git2.c repository.c clone.c oid.c error.c, $ext_shared)
+	PHP_NEW_EXTENSION(git2, src/php_git2.c src/repository.c src/clone.c src/oid.c src/error.c, $ext_shared)
 
 	PKG_CHECK_MODULES([LIBGIT2], [libgit2 >= 1.1.0])
 

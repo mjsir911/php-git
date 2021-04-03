@@ -64,7 +64,7 @@ Makefile
 /config.nice
 /Makefile.fragments
 /Makefile.objects
-/.libs
+.libs
 /modules
 *.lo
 *.la
