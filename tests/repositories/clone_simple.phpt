@@ -8,8 +8,9 @@ if (!extension_loaded('git2')) {
 ?>
 --FILE--
 <?php
+include "tests/utils.inc";
 $path = __DIR__ . "/php-git-test.git";
-$repo = git_clone("./tests/git-repo", $path);
+$repo = git_clone(TEST_REPO, $path);
 echo is_dir($path);
 ?>
 --CLEAN--

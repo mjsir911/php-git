@@ -78,11 +78,12 @@ PHP_FUNCTION(git_repository_discover) {
 	if (git_repository_discover(&buf, ZSTR_VAL(start_path), cross_fs, NULL))
 		RETURN_GITERROR();
 
-	char root[buf.size];
+	zend_long len = buf.size;
+	char root[len];
 	memcpy(root, buf.ptr, buf.size);
 
 	git_buf_dispose(&buf);
-	RETURN_STRING(root);
+	RETURN_STRINGL(root, len);
 }
 
 void php_git2_repository_free(zend_resource *rsrc) {

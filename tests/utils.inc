@@ -1,4 +1,5 @@
 <?php
+define("TEST_REPO", "tests/repo.git");
 // from zip's test suite
 /* recursively remove a directory */
 function rmdir_rf($dir) {
@@ -31,4 +32,7 @@ function getRelativePath($from, $to) {
     return str_repeat('..'.DS, count($dir)) . implode(DS, $file);
 }
 
+function localRepo($dir) {
+	return exec("git clone --quiet tests/repo.git {$dir}");
+}
 ?>

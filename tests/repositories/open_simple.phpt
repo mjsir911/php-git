@@ -8,8 +8,17 @@ if (!extension_loaded('git2')) {
 ?>
 --FILE--
 <?php
-$repo = git_repository_open("./tests/git-repo");
+require "tests/utils.inc";
+$clonepath = __DIR__ . '/git-repo';
+localRepo($clonepath);
+$repo = git_repository_open($clonepath);
 var_dump($repo);
 ?>
 --EXPECT--
-resource(4) of type (Git Repository)
+resource(6) of type (Git Repository)
+--CLEAN--
+<?php
+require "tests/utils.inc";
+$clonepath = __DIR__ . '/git-repo';
+rmdir_rf($clonepath);
+?>
