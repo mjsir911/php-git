@@ -8,6 +8,7 @@ extern int le_git_oid;
 
 extern void php_git2_oid_free(zend_resource *rsrc);
 extern git_oid* php_git2_oid_alloc(void);
+extern git_oid* php_git2_oid_copy(const git_oid *old);
 
 #include "oid_arginfo.h"
 

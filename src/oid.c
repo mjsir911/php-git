@@ -37,6 +37,12 @@ git_oid* php_git2_oid_alloc(void) {
 	return emalloc(sizeof(git_oid));
 }
 
+git_oid* php_git2_oid_copy(const git_oid *old) {
+	git_oid *ret = php_git2_oid_alloc();
+	memcpy(ret, old, sizeof(*ret));
+	return ret;
+}
+
 void php_git2_oid_free(zend_resource *rsrc) {
 	git_repository *repo = (git_repository *) rsrc->ptr;
 
