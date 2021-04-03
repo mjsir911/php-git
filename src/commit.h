@@ -13,4 +13,8 @@ extern void php_git2_commit_free(zend_resource *rsrc);
 	REGISTER_RESOURCE(le_git_commit, php_git2_commit_free, le_git_commit_name)
 #elif defined REGISTER_FUNCTION
 	REGISTER_FUNCTION(git_commit_lookup)
+	REGISTER_FUNCTION(git_commit_id)
+	REGISTER_FUNCTION(git_commit_message_encoding)
+	REGISTER_FUNCTION(git_commit_message)
+	REGISTER_FUNCTION(git_commit_summary)
 #endif
