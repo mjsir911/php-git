@@ -10,10 +10,10 @@ if (!extension_loaded('git2')) {
 <?php
 $repo = Repository::open_bare("./tests/repo.git");
 
-$revwalker = git_revwalk_new($repo);
-git_revwalk_push_range($revwalker, "faa1fb22..64806db6");
+$revwalker = new Revwalk($repo);
+$revwalker->push_range("faa1fb22..64806db6");
 
-while ($oid = git_revwalk_next($revwalker)) {
+foreach ($revwalker as $oid) {
 	echo git_oid_tostr($oid, 8), PHP_EOL;
 }
 ?>

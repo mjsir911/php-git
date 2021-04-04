@@ -1,6 +1,10 @@
 <?php
-function git_revwalk_new(mixed $repo): mixed {}
-function git_revwalk_push_range(mixed $walker, string $range): void {}
-function git_revwalk_push_head(mixed $walker): void {}
-function git_revwalk_next(mixed $walker): mixed {}
+/** @generate-function-entries */
+namespace git {
+	class Revwalk implements Traversable {
+		public function __construct(Repository $repo) {}
+		public function push_range(string $range): void {}
+		public function push_head(): void {}
+	}
+}
 ?>
