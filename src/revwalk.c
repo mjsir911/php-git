@@ -61,6 +61,59 @@ ZEND_METHOD(git_Revwalk, push_head) {
 	if (git_revwalk_push_head(revwalk->revwalk))
 		RETURN_GITERROR();
 }
+
+ZEND_METHOD(git_Revwalk, push_ref) {
+	zend_string *ref;
+	ZEND_PARSE_PARAMETERS_START(1, 1)
+		Z_PARAM_PATH_STR(ref);
+	ZEND_PARSE_PARAMETERS_END();
+
+	revwalk_t *revwalk = Z_REVWALK_P(ZEND_THIS);
+
+	if (git_revwalk_push_ref(revwalk->revwalk, ZSTR_VAL(ref)))
+		RETURN_GITERROR();
+}
+
+ZEND_METHOD(git_Revwalk, push_glob) {
+	zend_string *glob;
+	ZEND_PARSE_PARAMETERS_START(1, 1)
+		Z_PARAM_PATH_STR(glob);
+	ZEND_PARSE_PARAMETERS_END();
+
+	revwalk_t *revwalk = Z_REVWALK_P(ZEND_THIS);
+
+	if (git_revwalk_push_glob(revwalk->revwalk, ZSTR_VAL(glob)))
+		RETURN_GITERROR();
+}
+
+ZEND_METHOD(git_Revwalk, hide) {
+	zval *oid_dp;
+	ZEND_PARSE_PARAMETERS_START(1, 1)
+		Z_PARAM_RESOURCE(oid_dp);
+	ZEND_PARSE_PARAMETERS_END();
+
+		git_oid *oid;
+	if ((oid = (git_oid *)zend_fetch_resource(Z_RES_P(oid_dp), le_git_oid_name, le_git_oid)) == NULL)
+		RETURN_THROWS();
+
+	revwalk_t *revwalk = Z_REVWALK_P(ZEND_THIS);
+
+	if (git_revwalk_hide(revwalk->revwalk, oid))
+		RETURN_GITERROR();
+}
+
+ZEND_METHOD(git_Revwalk, hide_glob) {
+	zend_string *glob;
+	ZEND_PARSE_PARAMETERS_START(1, 1)
+		Z_PARAM_PATH_STR(glob);
+	ZEND_PARSE_PARAMETERS_END();
+
+	revwalk_t *revwalk = Z_REVWALK_P(ZEND_THIS);
+
+	if (git_revwalk_hide_glob(revwalk->revwalk, ZSTR_VAL(glob)))
+		RETURN_GITERROR();
+}
+
 ZEND_METHOD(git_Revwalk, getIterator) {
 	ZEND_PARSE_PARAMETERS_NONE();
 
