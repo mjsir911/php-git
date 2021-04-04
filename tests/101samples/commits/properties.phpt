@@ -23,8 +23,10 @@ echo $commit->summary();
 echo PHP_EOL;
 # echo git_commit_time($commit); // special
 # echo git_commit_time_offset($commit); // int
-# echo git_commit_committer($commit); // special
-# echo git_commit_author($commit); // special
+echo $commit->committer()->name(), PHP_EOL;
+echo $commit->committer()->email(), PHP_EOL;
+echo $commit->author()->name(), PHP_EOL;
+echo $commit->author()->email(), PHP_EOL;
 # echo git_commit_raw_header($commit);
 # echo git_commit_tree_id($commit);
 ?>
@@ -34,3 +36,7 @@ UTF-8
 Initial commit - add readme
 
 Initial commit - add readme
+Marco Sirabella
+marco@sirabella.org
+Marco Sirabella
+marco@sirabella.org

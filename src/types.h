@@ -3,3 +3,4 @@
 #include "oid.h"
 #include "commit.h"
 #include "revwalk.h"
+#include "signature.h"

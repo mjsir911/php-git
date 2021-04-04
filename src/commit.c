@@ -3,6 +3,7 @@
 #include "commit.h"
 #include "oid.h"
 #include "repository.h"
+#include "signature.h"
 #include "error.h"
 
 zend_class_entry *commit_class_entry = NULL;
@@ -90,6 +91,36 @@ ZEND_METHOD(git_Commit, summary) {
 	char buf[strlen(commit_summary) + 1];
 	strcpy(buf, commit_summary);
 	RETURN_STRING(buf);
+}
+
+ZEND_METHOD(git_Commit, committer) {
+	ZEND_PARSE_PARAMETERS_NONE();
+
+	commit_t *commit = Z_COMMIT_P(ZEND_THIS);
+
+	signature_t *sig = php_git2_signature_from_obj(
+		php_git2_signature_new(signature_class_entry)
+	);
+
+	if (git_signature_dup(&sig->signature, git_commit_committer(commit->commit)))
+		RETURN_THROWS();
+
+	RETURN_OBJ(&sig->std);
+}
+
+ZEND_METHOD(git_Commit, author) {
+	ZEND_PARSE_PARAMETERS_NONE();
+
+	commit_t *commit = Z_COMMIT_P(ZEND_THIS);
+
+	signature_t *sig = php_git2_signature_from_obj(
+		php_git2_signature_new(signature_class_entry)
+	);
+
+	if (git_signature_dup(&sig->signature, git_commit_author(commit->commit)))
+		RETURN_THROWS();
+
+	RETURN_OBJ(&sig->std);
 }
 
 ZEND_METHOD(git_Commit, tree_id) {

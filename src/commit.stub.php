@@ -11,8 +11,8 @@ namespace git {
 		public function summary(): string {}
 		// public function time(mixed $commit): mixed {}
 		// public function time_offset(mixed $commit): int {}
-		// public function commiter(mixed $commit): mixed {}
-		// public function author(mixed $commit): mixed {}
+		public function committer(): Signature {}
+		public function author(): Signature {}
 		// public function raw_header(mixed $commit): string {}
 		public function tree_id(): mixed {}
 	}
