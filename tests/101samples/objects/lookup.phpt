@@ -14,7 +14,8 @@ if (!extension_loaded('git2')) {
 $repo = Repository::open_bare("./tests/repo.git");
 
 $oid = git_oid_fromstr("0a64a3ad3af9c3b185067c47e47d46f4faa3b17d");
-var_dump(git_commit_lookup($repo, $oid))
+var_dump(new Commit($repo, $oid))
 ?>
 --EXPECTF--
-resource(%d) of type (Git Commit)
+object(Commit)#%d (0) {
+}

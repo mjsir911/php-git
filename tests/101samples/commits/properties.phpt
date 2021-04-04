@@ -11,15 +11,15 @@ if (!extension_loaded('git2')) {
 $repo = Repository::open_bare("./tests/repo.git");
 $oid = git_oid_fromstr("faa1fb22c4e0fb79bed3d3b7ea5901b7919fd131");
 
-$commit = git_commit_lookup($repo, $oid);
+$commit = new Commit($repo, $oid);
 
-echo git_oid_tostr(git_commit_id($commit), 8);
+echo git_oid_tostr($commit->id(), 8);
 echo PHP_EOL;
-echo git_commit_message_encoding($commit);
+echo $commit->message_encoding();
 echo PHP_EOL;
-echo git_commit_message($commit);
+echo $commit->message();
 echo PHP_EOL;
-echo git_commit_summary($commit);
+echo $commit->summary();
 echo PHP_EOL;
 # echo git_commit_time($commit); // special
 # echo git_commit_time_offset($commit); // int

@@ -40,8 +40,4 @@ extern zend_object_iterator *php_git2_revwalk_get_iterator(zend_class_entry *ce,
 	revwalk_object_handlers.free_obj = php_git2_revwalk_free;
 	revwalk_object_handlers.offset = XtOffsetOf(revwalk_t, std);
 #elif defined REGISTER_FUNCTION
-	// REGISTER_FUNCTION(git_revwalk_new)
-	// REGISTER_FUNCTION(git_revwalk_push_range)
-	// REGISTER_FUNCTION(git_revwalk_push_head)
-	// REGISTER_FUNCTION(git_revwalk_next)
 #endif
