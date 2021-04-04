@@ -10,15 +10,14 @@ int le_git_revwalk;
 
 PHP_FUNCTION(git_revwalk_new) {
 	zval *repo_dp;
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &repo_dp) == FAILURE)
-		RETURN_THROWS();
+	ZEND_PARSE_PARAMETERS_START(1, 1)
+		Z_PARAM_OBJECT_OF_CLASS(repo_dp, repository_class_entry)
+	ZEND_PARSE_PARAMETERS_END();
 
-	git_repository *repo;
-	if ((repo = (git_repository *)zend_fetch_resource(Z_RES_P(repo_dp), le_git_repository_name, le_git_repository)) == NULL)
-		RETURN_THROWS();
+	repository_t *repo = Z_REPOSITORY_P(repo_dp);
 
 	git_revwalk *walker;
-	if (git_revwalk_new(&walker, repo))
+	if (git_revwalk_new(&walker, repo->repo))
 		RETURN_GITERROR();
 	RETURN_RES(zend_register_resource(walker, le_git_revwalk));
 }

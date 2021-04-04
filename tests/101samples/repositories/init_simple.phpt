@@ -10,9 +10,9 @@ if (!extension_loaded('git2')) {
 <?php
 $tempdir = exec("mktemp -d");
 # With working directory:
-$repo = git_repository_init($tempdir, false);
+$repo = Repository::init($tempdir, false);
 # …or bare:
-$repo = git_repository_init($tempdir, true);
+$repo = Repository::init($tempdir, true);
 ?>
 --EXPECT--
 --CLEAN--

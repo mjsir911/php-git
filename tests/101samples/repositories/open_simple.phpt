@@ -11,11 +11,12 @@ if (!extension_loaded('git2')) {
 require "tests/utils.inc";
 $clonepath = __DIR__ . '/git-repo';
 localRepo($clonepath);
-$repo = git_repository_open($clonepath);
+$repo = Repository::open($clonepath);
 var_dump($repo);
 ?>
 --EXPECTF--
-resource(%d) of type (Git Repository)
+object(Repository)#%d (0) {
+}
 --CLEAN--
 <?php
 require "tests/utils.inc";

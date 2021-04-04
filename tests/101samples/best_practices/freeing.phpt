@@ -13,7 +13,7 @@ if (!extension_loaded('git2')) {
 # 
 # Fortunately, php does this automatically
 $tempdir = exec("mktemp -d");
-$repo = git_repository_init($tempdir, false);
+$repo = Repository::init($tempdir, false);
 unset($repo);
 ?>
 --EXPECT--

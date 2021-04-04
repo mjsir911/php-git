@@ -4,69 +4,69 @@
 #include "repository.h"
 #include "error.h"
 
-int le_git_repository;
+zend_class_entry *repository_class_entry = NULL;
+zend_object_handlers repository_object_handlers;
 
-PHP_FUNCTION(git_repository_init) {
-	git_repository *out;
-	char *path;
-	size_t path_len;
+zend_object *php_git2_repository_new(zend_class_entry *ce) {
+	repository_t *repo = zend_object_alloc(sizeof(repository_t), ce);
+	zend_object_std_init(&repo->std, ce);
+	repo->std.handlers = &repository_object_handlers;
+	return &repo->std;
+}
+
+void php_git2_repository_free(zend_object *obj) {
+	repository_t *repo = php_git2_repository_from_obj(obj);
+
+	if (repo->repo) {
+		git_repository_free(repo->repo);
+	}
+	zend_object_std_dtor(&repo->std);
+}
+
+ZEND_METHOD(git_Repository, init) {
+	repository_t *repo = php_git2_repository_from_obj(php_git2_repository_new(repository_class_entry));
+
+	zend_string *path;
 	zend_bool is_bare;
-	int error;
 	
 	if (zend_parse_parameters(ZEND_NUM_ARGS(),
-		"s|b", &path, &path_len, &is_bare) == FAILURE) {
+		"P|b", &path, &is_bare) == FAILURE) {
 		RETURN_THROWS();
 	}
 
-	error = git_repository_init(&out, path, is_bare);
+	if (git_repository_init(&repo->repo, ZSTR_VAL(path), is_bare))
+		RETURN_GITERROR();
 
-	if (php_git2_check_error(error, "git_repository_init")) {
-		RETURN_FALSE;
-	}
-
-	RETURN_RES(zend_register_resource(out, le_git_repository));
+	RETURN_OBJ(&repo->std);
 }
 
-PHP_FUNCTION(git_repository_commondir) {
-	zval *repo_dp;
-	git_repository *repo;
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r", &repo_dp) == FAILURE) {
-		RETURN_THROWS();
-	}
-	if ((repo = (git_repository *)zend_fetch_resource(Z_RES_P(repo_dp), le_git_repository_name, le_git_repository)) == NULL) {
-		RETURN_THROWS();
-	}
-
-	RETURN_STRING(git_repository_commondir(repo));
-}
-
-PHP_FUNCTION(git_repository_open) {
-	git_repository *repo;
+ZEND_METHOD(git_Repository, open) {
+	repository_t *repo = php_git2_repository_from_obj(php_git2_repository_new(repository_class_entry));
 	zend_string *path;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "P", &path) == FAILURE)
 		RETURN_THROWS();
 
-	if (git_repository_open(&repo, ZSTR_VAL(path)))
+	if (git_repository_open(&repo->repo, ZSTR_VAL(path)))
 		RETURN_GITERROR();
 
-	RETURN_RES(zend_register_resource(repo, le_git_repository));
+	RETURN_OBJ(&repo->std);
 }
 
-PHP_FUNCTION(git_repository_open_bare) {
-	git_repository *repo;
+ZEND_METHOD(git_Repository, open_bare) {
+	repository_t *repo = php_git2_repository_from_obj(php_git2_repository_new(repository_class_entry));
 	zend_string *path;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "P", &path) == FAILURE)
 		RETURN_THROWS();
 
-	if (git_repository_open_bare(&repo, ZSTR_VAL(path)))
+	if (git_repository_open_bare(&repo->repo, ZSTR_VAL(path)))
 		RETURN_GITERROR();
 
-	RETURN_RES(zend_register_resource(repo, le_git_repository));
+	RETURN_OBJ(&repo->std);
 }
 
-PHP_FUNCTION(git_repository_discover) {
+ZEND_METHOD(git_Repository, discover) {
 	git_buf buf = {0};
 	zend_string *start_path;
 	zend_bool cross_fs;
@@ -86,11 +86,14 @@ PHP_FUNCTION(git_repository_discover) {
 	RETURN_STRINGL(root, len);
 }
 
-void php_git2_repository_free(zend_resource *rsrc) {
-	git_repository *repo = (git_repository *) rsrc->ptr;
-
-	if (repo) {
-		git_repository_free(repo);
-		rsrc->ptr = NULL;
+ZEND_METHOD(git_Repository, commondir) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "") == FAILURE) {
+		RETURN_THROWS();
 	}
+
+	repository_t *repo = Z_REPOSITORY_P(ZEND_THIS);
+	if (!repo->repo)
+		RETURN_THROWS();
+
+	RETURN_STRING(git_repository_commondir(repo->repo));
 }

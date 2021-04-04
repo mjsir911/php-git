@@ -15,7 +15,7 @@ $clonepath = __DIR__ . '/git-repo';
 localRepo($clonepath);
 echo getRelativePath(
 	__DIR__,
-	git_repository_discover($clonepath . '/src/')
+	Repository::discover($clonepath . '/src/')
 );
 ?>
 --EXPECT--

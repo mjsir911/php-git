@@ -8,7 +8,7 @@ if (!extension_loaded('git2')) {
 ?>
 --FILE--
 <?php
-$repo = git_repository_open_bare("./tests/repo.git");
+$repo = Repository::open_bare("./tests/repo.git");
 
 $revwalker = git_revwalk_new($repo);
 git_revwalk_push_range($revwalker, "faa1fb22..64806db6");

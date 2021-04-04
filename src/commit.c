@@ -9,18 +9,18 @@ int le_git_commit;
 
 PHP_FUNCTION(git_commit_lookup) {
 	zval *oid_dp, *repo_dp;
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "rr", &repo_dp, &oid_dp) == FAILURE)
-		RETURN_THROWS();
+	ZEND_PARSE_PARAMETERS_START(2, 2)
+		Z_PARAM_OBJECT_OF_CLASS(repo_dp, repository_class_entry)
+		Z_PARAM_RESOURCE(oid_dp)
+	ZEND_PARSE_PARAMETERS_END();
 
-	git_repository *repo;
+	repository_t *repo = Z_REPOSITORY_P(repo_dp);
 	git_oid *oid;
 	if ((oid = (git_oid *)zend_fetch_resource(Z_RES_P(oid_dp), le_git_oid_name, le_git_oid)) == NULL)
 		RETURN_THROWS();
-	if ((repo = (git_repository *)zend_fetch_resource(Z_RES_P(repo_dp), le_git_repository_name, le_git_repository)) == NULL)
-		RETURN_THROWS();
 
 	git_commit *commit;
-	if (git_commit_lookup(&commit, repo, oid))
+	if (git_commit_lookup(&commit, repo->repo, oid))
 		RETURN_GITERROR();
 
 	RETURN_RES(zend_register_resource(commit, le_git_commit));
