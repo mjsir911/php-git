@@ -61,6 +61,11 @@ ZEND_METHOD(git_Revwalk, push_head) {
 	if (git_revwalk_push_head(revwalk->revwalk))
 		RETURN_GITERROR();
 }
+ZEND_METHOD(git_Revwalk, getIterator) {
+	ZEND_PARSE_PARAMETERS_NONE();
+
+	zend_create_internal_iterator_zval(return_value, ZEND_THIS);
+}
 
 // begin iterator hell
 
