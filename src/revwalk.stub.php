@@ -1,9 +1,8 @@
 <?php
 /** @generate-function-entries */
 namespace git {
-	class Revwalk implements IteratorAggregate {
+	class Revwalk implements Iterator {
 		public function __construct(Repository $repo) {}
-		public function getIterator(): Iterator {} // this is needed for iteration
 
 		public function push_range(string $range): void {}
 		public function push_head(): void {}
@@ -12,6 +11,12 @@ namespace git {
 
 		public function hide(mixed $oid): void {}
 		public function hide_glob(string $glob): void {}
+
+		public function current(): mixed {}
+		public function key(): int {}
+		public function next(): void {}
+		public function rewind(): void {}
+		public function valid(): bool {}
 	}
 }
 ?>

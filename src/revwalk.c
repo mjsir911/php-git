@@ -1,4 +1,5 @@
 #include <php.h>
+#include <zend_interfaces.h>
 #include <git2/revwalk.h>
 #include <git2/repository.h>
 #include "revwalk.h"
@@ -37,6 +38,8 @@ ZEND_METHOD(git_Revwalk, __construct) {
 	revwalk_t *walker = Z_REVWALK_P(ZEND_THIS);
 	if (git_revwalk_new(&walker->revwalk, repo->repo))
 		RETURN_GITERROR();
+
+	zend_create_internal_iterator_zval(&walker->iter, ZEND_THIS);
 }
 
 ZEND_METHOD(git_Revwalk, push_range) {
@@ -114,13 +117,44 @@ ZEND_METHOD(git_Revwalk, hide_glob) {
 		RETURN_GITERROR();
 }
 
-ZEND_METHOD(git_Revwalk, getIterator) {
-	ZEND_PARSE_PARAMETERS_NONE();
-
-	zend_create_internal_iterator_zval(return_value, ZEND_THIS);
-}
 
 // begin iterator hell
+
+ZEND_METHOD(git_Revwalk, current) {
+	ZEND_PARSE_PARAMETERS_NONE();
+
+	zval *iter = &Z_REVWALK_P(ZEND_THIS)->iter;
+
+	zend_call_method_with_0_params(Z_OBJ(*iter), Z_OBJCE(*iter), NULL, "current", return_value);
+}
+ZEND_METHOD(git_Revwalk, key) {
+	ZEND_PARSE_PARAMETERS_NONE();
+
+	zval *iter = &Z_REVWALK_P(ZEND_THIS)->iter;
+
+	zend_call_method_with_0_params(Z_OBJ(*iter), Z_OBJCE(*iter), NULL, "key", return_value);
+}
+ZEND_METHOD(git_Revwalk, next) {
+	ZEND_PARSE_PARAMETERS_NONE();
+
+	zval *iter = &Z_REVWALK_P(ZEND_THIS)->iter;
+
+	zend_call_method_with_0_params(Z_OBJ(*iter), Z_OBJCE(*iter), NULL, "next", return_value);
+}
+ZEND_METHOD(git_Revwalk, rewind) {
+	ZEND_PARSE_PARAMETERS_NONE();
+
+	zval *iter = &Z_REVWALK_P(ZEND_THIS)->iter;
+
+	zend_call_method_with_0_params(Z_OBJ(*iter), Z_OBJCE(*iter), NULL, "rewind", return_value);
+}
+ZEND_METHOD(git_Revwalk, valid) {
+	ZEND_PARSE_PARAMETERS_NONE();
+
+	zval *iter = &Z_REVWALK_P(ZEND_THIS)->iter;
+
+	zend_call_method_with_0_params(Z_OBJ(*iter), Z_OBJCE(*iter), NULL, "valid", return_value);
+}
 
 typedef struct {
 	revwalk_t *revwalk;
@@ -166,7 +200,7 @@ const zend_object_iterator_funcs php_git2_revwalk_iterator_funcs = {
 	NULL, /* current_key */
 	php_git2_revwalk_iterator_move_forward,
 	NULL, /* rewind */
-	NULL, /* ? */
+	NULL, /* invalidate_current */
 	NULL, /* get_gc */
 };
 
