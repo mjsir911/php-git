@@ -13,14 +13,10 @@ $oid = git_oid_fromstr("faa1fb22c4e0fb79bed3d3b7ea5901b7919fd131");
 
 $commit = new Commit($repo, $oid);
 
-echo git_oid_tostr($commit->id(), 8);
-echo PHP_EOL;
-echo $commit->message_encoding();
-echo PHP_EOL;
-echo $commit->message();
-echo PHP_EOL;
-echo $commit->summary();
-echo PHP_EOL;
+echo git_oid_tostr($commit->id(), 8), PHP_EOL;
+echo $commit->message_encoding(), PHP_EOL;
+echo $commit->message(), PHP_EOL;
+echo $commit->summary(), PHP_EOL;
 # echo git_commit_time($commit); // special
 # echo git_commit_time_offset($commit); // int
 echo $commit->committer()->name(), PHP_EOL;
