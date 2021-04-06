@@ -7,6 +7,7 @@ namespace git {
 		public static function name_to_id(Repository $repo, string $name): mixed {}
 
 		public function target(): mixed {}
+		public function name(): string {}
 	}
 }
 ?>

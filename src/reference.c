@@ -93,3 +93,11 @@ ZEND_METHOD(git_Reference, target) {
 
 	RETURN_RES(zend_register_resource(php_git2_oid_copy(oid), le_git_oid));
 }
+
+ZEND_METHOD(git_Reference, name) {
+	ZEND_PARSE_PARAMETERS_NONE();
+
+	reference_t *ref = Z_REFERENCE_P(ZEND_THIS);
+
+	RETURN_STRING(git_reference_name(ref->reference));
+}
