@@ -9,6 +9,8 @@ namespace git {
 		public static function open_bare(string $path): Repository {}
 		public static function discover(string $start_path, bool $across_fs=false, array $ceiling_dirs=[]): string {}
 		public function commondir(): string {}
+
+		public function references(): ReferenceIterator {}
 	}
 }
 ?>

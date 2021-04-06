@@ -5,3 +5,4 @@
 #include "revwalk.h"
 #include "signature.h"
 #include "reference.h"
+#include "reference_iterator.h"
