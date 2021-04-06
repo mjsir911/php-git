@@ -4,3 +4,4 @@
 #include "commit.h"
 #include "revwalk.h"
 #include "signature.h"
+#include "reference.h"
