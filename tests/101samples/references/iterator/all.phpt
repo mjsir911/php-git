@@ -18,3 +18,6 @@ foreach ($repo->references() as $ref) {
 refs/heads/master 64806db6
 refs/heads/msirabella/fix/importable 2596aeb1
 refs/heads/msirabella/foobar 25d231de
+refs/tags/neg_1 0bc92598
+refs/tags/tests-depend-on-this-being-head 64806db6
+refs/tags/v0.0 27a41307
