@@ -11,6 +11,7 @@ zend_object_handlers repository_object_handlers;
 zend_object *php_git2_repository_new(zend_class_entry *ce) {
 	repository_t *repo = zend_object_alloc(sizeof(repository_t), ce);
 	zend_object_std_init(&repo->std, ce);
+	object_properties_init(&repo->std, ce);
 	repo->std.handlers = &repository_object_handlers;
 	return &repo->std;
 }

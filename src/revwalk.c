@@ -11,10 +11,11 @@ zend_class_entry *revwalk_class_entry = NULL;
 zend_object_handlers revwalk_object_handlers;
 
 zend_object *php_git2_revwalk_new(zend_class_entry *ce) {
-	revwalk_t *repo = zend_object_alloc(sizeof(revwalk_t), ce);
-	zend_object_std_init(&repo->std, ce);
-	repo->std.handlers = &revwalk_object_handlers;
-	return &repo->std;
+	revwalk_t *revwalk = zend_object_alloc(sizeof(revwalk_t), ce);
+	zend_object_std_init(&revwalk->std, ce);
+	object_properties_init(&revwalk->std, ce);
+	revwalk->std.handlers = &revwalk_object_handlers;
+	return &revwalk->std;
 }
 
 void php_git2_revwalk_free(zend_object *obj) {

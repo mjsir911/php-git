@@ -11,6 +11,7 @@ zend_object_handlers reference_object_handlers;
 zend_object *php_git2_reference_new(zend_class_entry *ce) {
 	reference_t *ref = zend_object_alloc(sizeof(reference_t), ce);
 	zend_object_std_init(&ref->std, ce);
+	object_properties_init(&ref->std, ce);
 	ref->std.handlers = &reference_object_handlers;
 	return &ref->std;
 }

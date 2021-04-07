@@ -14,6 +14,7 @@ zend_object_handlers reference_iterator_object_handlers;
 zend_object *php_git2_reference_iterator_new(zend_class_entry *ce) {
 	reference_iterator_t *iter = zend_object_alloc(sizeof(reference_iterator_t), ce);
 	zend_object_std_init(&iter->std, ce);
+	object_properties_init(&iter->std, ce);
 	iter->std.handlers = &reference_iterator_object_handlers;
 	return &iter->std;
 }

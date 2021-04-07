@@ -11,6 +11,7 @@ zend_object_handlers signature_object_handlers;
 zend_object *php_git2_signature_new(zend_class_entry *ce) {
 	signature_t *signature = zend_object_alloc(sizeof(signature_t), ce);
 	zend_object_std_init(&signature->std, ce);
+	object_properties_init(&signature->std, ce);
 	signature->std.handlers = &signature_object_handlers;
 	return &signature->std;
 }

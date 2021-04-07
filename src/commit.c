@@ -12,6 +12,7 @@ zend_object_handlers commit_object_handlers;
 zend_object *php_git2_commit_new(zend_class_entry *ce) {
 	commit_t *commit = zend_object_alloc(sizeof(commit_t), ce);
 	zend_object_std_init(&commit->std, ce);
+	object_properties_init(&commit->std, ce);
 	commit->std.handlers = &commit_object_handlers;
 	return &commit->std;
 }
