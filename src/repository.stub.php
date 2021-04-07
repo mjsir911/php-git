@@ -4,6 +4,8 @@
 
 namespace git {
 	class Repository {
+		protected function __construct(string $bare_path) {}
+
 		public static function init(string $path, bool $bare = false): Repository {}
 		public static function open(string $path): Repository {}
 		public static function open_bare(string $path): Repository {}

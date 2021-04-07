@@ -1,6 +1,7 @@
 #include <php.h>
 #include <git2/repository.h>
 #include <git2/buffer.h>
+#include <zend_interfaces.h>
 #include "repository.h"
 #include "error.h"
 
@@ -21,6 +22,19 @@ void php_git2_repository_free(zend_object *obj) {
 		git_repository_free(repo->repo);
 	}
 	zend_object_std_dtor(&repo->std);
+}
+
+ZEND_METHOD(git_Repository, __construct) {
+
+	zend_string *bare_path;
+	ZEND_PARSE_PARAMETERS_START(1, 1)
+		Z_PARAM_STR(bare_path)
+	ZEND_PARSE_PARAMETERS_END();
+
+	repository_t *repo = Z_REPOSITORY_P(ZEND_THIS);
+
+	if (git_repository_open_bare(&repo->repo, ZSTR_VAL(bare_path)))
+		RETURN_GITERROR();
 }
 
 ZEND_METHOD(git_Repository, init) {
@@ -53,15 +67,20 @@ ZEND_METHOD(git_Repository, open) {
 	RETURN_OBJ(&repo->std);
 }
 
+
 ZEND_METHOD(git_Repository, open_bare) {
 	repository_t *repo = php_git2_repository_from_obj(php_git2_repository_new(repository_class_entry));
-	zend_string *path;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "P", &path) == FAILURE)
-		RETURN_THROWS();
+	zend_string *bare_path;
+	ZEND_PARSE_PARAMETERS_START(1, 1)
+		Z_PARAM_PATH_STR(bare_path)
+	ZEND_PARSE_PARAMETERS_END();
 
-	if (git_repository_open_bare(&repo->repo, ZSTR_VAL(path)))
-		RETURN_GITERROR();
+
+	zval bare_path_dp;
+	ZVAL_STR(&bare_path_dp, bare_path);
+
+	zend_call_method_with_1_params(&repo->std, repo->std.ce, NULL, "__construct", NULL, &bare_path_dp);
 
 	RETURN_OBJ(&repo->std);
 }
