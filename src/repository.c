@@ -38,7 +38,8 @@ ZEND_METHOD(git_Repository, __construct) {
 }
 
 ZEND_METHOD(git_Repository, init) {
-	repository_t *repo = php_git2_repository_from_obj(php_git2_repository_new(repository_class_entry));
+	object_init_ex(ZEND_THIS, repository_class_entry);
+	repository_t *repo = Z_REPOSITORY_P(ZEND_THIS);
 
 	zend_string *path;
 	zend_bool is_bare;
@@ -55,9 +56,10 @@ ZEND_METHOD(git_Repository, init) {
 }
 
 ZEND_METHOD(git_Repository, open) {
-	repository_t *repo = php_git2_repository_from_obj(php_git2_repository_new(repository_class_entry));
-	zend_string *path;
+	object_init_ex(ZEND_THIS, repository_class_entry);
+	repository_t *repo = Z_REPOSITORY_P(ZEND_THIS);
 
+	zend_string *path;
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "P", &path) == FAILURE)
 		RETURN_THROWS();
 
@@ -69,7 +71,8 @@ ZEND_METHOD(git_Repository, open) {
 
 
 ZEND_METHOD(git_Repository, open_bare) {
-	repository_t *repo = php_git2_repository_from_obj(php_git2_repository_new(repository_class_entry));
+	object_init_ex(return_value, repository_class_entry);
+	repository_t *repo = Z_REPOSITORY_P(return_value);
 
 	zend_string *bare_path;
 	ZEND_PARSE_PARAMETERS_START(1, 1)
@@ -80,7 +83,7 @@ ZEND_METHOD(git_Repository, open_bare) {
 	zval bare_path_dp;
 	ZVAL_STR(&bare_path_dp, bare_path);
 
-	zend_call_method_with_1_params(&repo->std, repo->std.ce, NULL, "__construct", NULL, &bare_path_dp);
+	zend_call_method_with_1_params(Z_OBJ_P(return_value), Z_OBJCE_P(return_value), NULL, "__construct", NULL, &bare_path_dp);
 
 	RETURN_OBJ(&repo->std);
 }

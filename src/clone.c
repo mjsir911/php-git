@@ -6,7 +6,9 @@
 
 PHP_FUNCTION(git_clone)
 {
-	repository_t *repo = php_git2_repository_from_obj(php_git2_repository_new(repository_class_entry));
+	object_init_ex(return_value, repository_class_entry);
+	repository_t *repo = Z_REPOSITORY_P(return_value);
+
 	zend_bool bare;
 	zend_string *url = NULL, *local_path = NULL;
 	git_clone_options _options = GIT_CLONE_OPTIONS_INIT;

@@ -35,7 +35,8 @@ ZEND_METHOD(git_Reference, dwim) {
 
 	repository_t *repo = Z_REPOSITORY_P(repo_dp);
 
-	reference_t *ref = php_git2_reference_from_obj(php_git2_reference_new(reference_class_entry));
+	object_init_ex(return_value, reference_class_entry);
+	reference_t *ref = Z_REFERENCE_P(return_value);
 
 	if (git_reference_dwim(&ref->reference, repo->repo, ZSTR_VAL(shorthand)))
 		RETURN_GITERROR();
@@ -54,7 +55,8 @@ ZEND_METHOD(git_Reference, lookup) {
 
 	repository_t *repo = Z_REPOSITORY_P(repo_dp);
 
-	reference_t *ref = php_git2_reference_from_obj(php_git2_reference_new(reference_class_entry));
+	object_init_ex(return_value, reference_class_entry);
+	reference_t *ref = Z_REFERENCE_P(return_value);
 
 	if (git_reference_lookup(&ref->reference, repo->repo, ZSTR_VAL(name)))
 		RETURN_GITERROR();

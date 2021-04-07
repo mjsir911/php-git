@@ -36,7 +36,9 @@ ZEND_METHOD(git_ReferenceIterator, current) {
 
 	reference_iterator_t *iter = Z_REFERENCE_ITERATOR_P(ZEND_THIS);
 
-	reference_t *ref = php_git2_reference_from_obj(php_git2_reference_new(reference_class_entry));
+	object_init_ex(return_value, reference_class_entry);
+	reference_t *ref = Z_REFERENCE_P(return_value);
+
 	git_reference_dup(&ref->reference, iter->current);
 	RETURN_OBJ(&ref->std);
 }
