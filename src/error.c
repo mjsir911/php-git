@@ -15,6 +15,12 @@ int php_git2_check_error(int error_code, const char *action)
 }
 
 void php_git2_print_error() {
-	const git_error *error = giterr_last();
-	return php_error_docref(NULL, E_WARNING, "%s", (error && error->message) ? error->message : "???");
+	const git_error *error = git_error_last();
+	if (error)
+		if (error->message)
+			return php_error_docref(NULL, E_WARNING, "%s", error->message);
+		else
+			return php_error_docref(NULL, E_WARNING, "git_error->code: %d",  error->klass);
+	else
+		return php_error_docref(NULL, E_WARNING, "unknown error");
 }
