@@ -29,5 +29,10 @@ extern void php_git2_commit_free(zend_object *obj);
 	memcpy(&commit_object_handlers, &std_object_handlers, sizeof(zend_object_handlers));
 	commit_object_handlers.free_obj = php_git2_commit_free;
 	commit_object_handlers.offset = XtOffsetOf(commit_t, std);
-#elif defined REGISTER_FUNCTION
+#elif defined REGISTER_CONVERT
+	case GIT_OBJECT_COMMIT: {
+		zend_object *__ret = php_git2_commit_new(commit_class_entry);
+		php_git2_commit_from_obj(__ret)->commit = (git_commit *) obj;
+		return __ret;
+	}
 #endif
