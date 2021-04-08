@@ -14,13 +14,14 @@ if (!extension_loaded('git2')) {
 
 /* Convert a SHA to an OID */
 $sha = "4a202b346bb0fb0db7eff3cffeb3c70babbd2045";
-$oid = git_oid_fromstr($sha);
+$oid = new Oid($sha);
 var_dump($oid);
 
 /* Make a shortened printable string from an OID */
-$shortsha = git_oid_tostr($oid, 8);
+$shortsha = $oid->__toString(8);
 echo $shortsha;
 ?>
 --EXPECTF--
-resource(%d) of type (Git OID)
+object(Oid)#%d (0) {
+}
 4a202b34

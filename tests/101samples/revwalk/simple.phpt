@@ -14,7 +14,7 @@ $walker = new Revwalk($repo);
 $walker->push_range("faa1fb22..64806db6");
 
 foreach ($walker as $oid) {
-	echo git_oid_tostr($oid, 8), PHP_EOL;
+	echo $oid->__toString(8), PHP_EOL;
 }
 ?>
 --EXPECT--

@@ -13,7 +13,7 @@ $repo = Repository::open_bare("./tests/repo.git");
 $ref = Reference::dwim($repo, "HEAD");
 
 $oid = $ref->target();
-echo git_oid_tostr($oid, 8), PHP_EOL;
+echo $oid->__toString(8), PHP_EOL;
 ?>
 --EXPECT--
 64806db6

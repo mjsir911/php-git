@@ -30,16 +30,14 @@ ZEND_METHOD(git_Commit, __construct) {
 	zval *repo_dp, *oid_dp;
 	ZEND_PARSE_PARAMETERS_START(2, 2)
 		Z_PARAM_OBJECT_OF_CLASS(repo_dp, repository_class_entry)
-		Z_PARAM_RESOURCE(oid_dp)
+		Z_PARAM_OBJECT_OF_CLASS(oid_dp, oid_class_entry)
 	ZEND_PARSE_PARAMETERS_END();
 
 	repository_t *repo = Z_REPOSITORY_P(repo_dp);
-	git_oid *oid;
-	if ((oid = (git_oid *)zend_fetch_resource(Z_RES_P(oid_dp), le_git_oid_name, le_git_oid)) == NULL)
-		RETURN_THROWS();
+	oid_t *oid = Z_OID_P(oid_dp);
 
 	commit_t *commit = Z_COMMIT_P(ZEND_THIS);
-	if (git_commit_lookup(&commit->commit, repo->repo, oid))
+	if (git_commit_lookup(&commit->commit, repo->repo, &oid->oid))
 		RETURN_GITERROR();
 }
 
@@ -48,9 +46,9 @@ ZEND_METHOD(git_Commit, id) {
 
 	commit_t *commit = Z_COMMIT_P(ZEND_THIS);
 
-	git_oid *oid = php_git2_oid_alloc();
-	memcpy(oid, git_commit_id(commit->commit), sizeof(*oid));
-	RETURN_RES(zend_register_resource(oid, le_git_oid));
+	object_init_ex(return_value, oid_class_entry);
+	oid_t *oid = Z_OID_P(return_value);
+	memcpy(&oid->oid, git_commit_id(commit->commit), sizeof(oid->oid));
 }
 
 ZEND_METHOD(git_Commit, message_encoding) {
@@ -129,7 +127,7 @@ ZEND_METHOD(git_Commit, tree_id) {
 
 	commit_t *commit = Z_COMMIT_P(ZEND_THIS);
 
-	git_oid *oid = php_git2_oid_alloc();
-	memcpy(oid, git_commit_tree_id(commit->commit), sizeof(*oid));
-	RETURN_RES(zend_register_resource(oid, le_git_oid));
+	object_init_ex(return_value, oid_class_entry);
+	oid_t *oid = Z_OID_P(return_value);
+	memcpy(&oid->oid, git_commit_tree_id(commit->commit), sizeof(oid->oid));
 }

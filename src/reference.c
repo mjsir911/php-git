@@ -76,12 +76,11 @@ ZEND_METHOD(git_Reference, name_to_id) {
 
 	repository_t *repo = Z_REPOSITORY_P(repo_dp);
 
-	git_oid oid;
+	object_init_ex(return_value, oid_class_entry);
+	oid_t *oid = Z_OID_P(return_value);
 
-	if (git_reference_name_to_id(&oid, repo->repo, ZSTR_VAL(name)))
+	if (git_reference_name_to_id(&oid->oid, repo->repo, ZSTR_VAL(name)))
 		RETURN_GITERROR();
-
-	RETURN_RES(zend_register_resource(php_git2_oid_copy(&oid), le_git_oid));
 }
 
 ZEND_METHOD(git_Reference, target) {
@@ -89,12 +88,15 @@ ZEND_METHOD(git_Reference, target) {
 
 	reference_t *ref = Z_REFERENCE_P(ZEND_THIS);
 
-	const git_oid *oid;
+	object_init_ex(return_value, oid_class_entry);
+	oid_t *oid = Z_OID_P(return_value);
 
-	if (!(oid = git_reference_target(ref->reference)))
+	const git_oid *tmpoid;
+
+	if (!(tmpoid = git_reference_target(ref->reference)))
 		RETURN_NULL();
 
-	RETURN_RES(zend_register_resource(php_git2_oid_copy(oid), le_git_oid));
+	memcpy(&oid->oid, tmpoid, sizeof(oid->oid));
 }
 
 ZEND_METHOD(git_Reference, name) {

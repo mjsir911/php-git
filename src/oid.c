@@ -3,51 +3,43 @@
 #include "oid.h"
 #include "error.h"
 
-int le_git_oid;
+zend_class_entry *oid_class_entry = NULL;
+zend_object_handlers oid_object_handlers;
 
-PHP_FUNCTION(git_oid_fromstr) {
-	zend_string *sha;
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "S", &sha) == FAILURE)
-		RETURN_THROWS();
-
-	git_oid *oid = php_git2_oid_alloc();
-	if (git_oid_fromstr(oid, ZSTR_VAL(sha)))
-		RETURN_GITERROR();
-
-	RETURN_RES(zend_register_resource(oid, le_git_oid));
+zend_object *php_git2_oid_new(zend_class_entry *ce) {
+	oid_t *this = zend_object_alloc(sizeof(oid_t), ce);
+	zend_object_std_init(&this->std, ce);
+	object_properties_init(&this->std, ce);
+	this->std.handlers = &oid_object_handlers;
+	return &this->std;
 }
 
-PHP_FUNCTION(git_oid_tostr) {
-	zval *oid_dp;
-	zend_long len;
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "r|l", &oid_dp, &len) == FAILURE)
-		RETURN_THROWS();
+void php_git2_oid_free(zend_object *obj) {
+	zend_object_std_dtor(obj);
+}
 
-	git_oid *oid;
-	if ((oid = (git_oid *)zend_fetch_resource(Z_RES_P(oid_dp), le_git_oid_name, le_git_oid)) == NULL)
-		RETURN_THROWS();
+PHP_METHOD(git_Oid, __construct) {
+	zend_string *sha;
+	ZEND_PARSE_PARAMETERS_START(1, 1)
+		Z_PARAM_STR(sha)
+	ZEND_PARSE_PARAMETERS_END();
+
+	oid_t *this = Z_OID_P(ZEND_THIS);
+	if (git_oid_fromstr(&this->oid, ZSTR_VAL(sha)))
+		RETURN_GITERROR();
+}
+
+PHP_METHOD(git_Oid, __toString) {
+	zend_long len = 64;
+	ZEND_PARSE_PARAMETERS_START(0, 1)
+		Z_PARAM_OPTIONAL
+		Z_PARAM_LONG(len)
+	ZEND_PARSE_PARAMETERS_END();
+
+	oid_t *this = Z_OID_P(ZEND_THIS);
 
 	len++; // for the trailing null
 	char buf[len];
-	git_oid_tostr(buf, len, oid);
+	git_oid_tostr(buf, len, &this->oid);
 	RETURN_STRING(buf);
-}
-
-git_oid* php_git2_oid_alloc(void) {
-	return emalloc(sizeof(git_oid));
-}
-
-git_oid* php_git2_oid_copy(const git_oid *old) {
-	git_oid *ret = php_git2_oid_alloc();
-	memcpy(ret, old, sizeof(*ret));
-	return ret;
-}
-
-void php_git2_oid_free(zend_resource *rsrc) {
-	git_repository *repo = (git_repository *) rsrc->ptr;
-
-	if (repo) {
-		efree(rsrc->ptr);
-		rsrc->ptr = NULL;
-	}
 }

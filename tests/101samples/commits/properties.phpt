@@ -9,11 +9,11 @@ if (!extension_loaded('git2')) {
 --FILE--
 <?php
 $repo = Repository::open_bare("./tests/repo.git");
-$oid = git_oid_fromstr("faa1fb22c4e0fb79bed3d3b7ea5901b7919fd131");
+$oid = new Oid("faa1fb22c4e0fb79bed3d3b7ea5901b7919fd131");
 
 $commit = new Commit($repo, $oid);
 
-echo git_oid_tostr($commit->id(), 8), PHP_EOL;
+echo $commit->id()->__toString(8), PHP_EOL;
 echo $commit->message_encoding(), PHP_EOL;
 echo $commit->message(), PHP_EOL;
 echo $commit->summary(), PHP_EOL;

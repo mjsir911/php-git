@@ -12,7 +12,7 @@ if (!extension_loaded('git2')) {
 $repo = Repository::open_bare("./tests/repo.git");
 
 $oid = Reference::name_to_id($repo, "HEAD");
-echo git_oid_tostr($oid, 8);
+echo $oid->__toString(8);
 ?>
 --EXPECTF--
 64806db6

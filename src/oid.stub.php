@@ -1,6 +1,9 @@
 <?php
-namespace git\oid {
-	function fromstr(string $sha): mixed {}
-	function tostr(mixed $oid): string {}
+/** @generate-function-entries */
+namespace git {
+	class Oid {
+		public function __construct(string $sha) {}
+		public function __toString(): string {}
+	}
 }
 ?>

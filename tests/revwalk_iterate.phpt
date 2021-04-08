@@ -14,8 +14,8 @@ $revwalker = new Revwalk($repo);
 $revwalker->push_head();
 
 foreach (new LimitIterator($revwalker, 0, 1) as $oid) {
-	echo git_oid_tostr($oid, 8), PHP_EOL;
+	echo $oid, PHP_EOL;
 }
 ?>
 --EXPECT--
-64806db6
+64806db6955b90da39203a9bdb7285efffdd1402

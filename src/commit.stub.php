@@ -2,10 +2,10 @@
 /** @generate-function-entries */
 namespace git {
 	class Commit {
-		public function __construct(Repository $repo, mixed $oid) {}
+		public function __construct(Repository $repo, Oid $oid) {}
 
 		// these are propreties and I would love to make an object
-		public function id(): mixed {}
+		public function id(): Oid {}
 		public function message_encoding(): string {}
 		public function message(): string {}
 		public function summary(): string {}
@@ -14,7 +14,7 @@ namespace git {
 		public function committer(): Signature {}
 		public function author(): Signature {}
 		// public function raw_header(mixed $commit): string {}
-		public function tree_id(): mixed {}
+		public function tree_id(): Oid {}
 	}
 }
 ?>

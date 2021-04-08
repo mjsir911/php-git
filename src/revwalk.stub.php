@@ -9,10 +9,10 @@ namespace git {
 		public function push_ref(string $ref): void {}
 		public function push_glob(string $ref): void {}
 
-		public function hide(mixed $oid): void {}
+		public function hide(Oid $oid): void {}
 		public function hide_glob(string $glob): void {}
 
-		public function current(): mixed {}
+		public function current(): Oid {}
 		public function key(): int {}
 		public function next(): void {}
 		public function rewind(): void {}

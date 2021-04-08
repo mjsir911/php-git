@@ -93,16 +93,13 @@ ZEND_METHOD(git_Revwalk, push_glob) {
 ZEND_METHOD(git_Revwalk, hide) {
 	zval *oid_dp;
 	ZEND_PARSE_PARAMETERS_START(1, 1)
-		Z_PARAM_RESOURCE(oid_dp);
+		Z_PARAM_OBJECT_OF_CLASS(oid_dp, oid_class_entry)
 	ZEND_PARSE_PARAMETERS_END();
 
-		git_oid *oid;
-	if ((oid = (git_oid *)zend_fetch_resource(Z_RES_P(oid_dp), le_git_oid_name, le_git_oid)) == NULL)
-		RETURN_THROWS();
-
+	oid_t *oid = Z_OID_P(oid_dp);
 	revwalk_t *revwalk = Z_REVWALK_P(ZEND_THIS);
 
-	if (git_revwalk_hide(revwalk->revwalk, oid))
+	if (git_revwalk_hide(revwalk->revwalk, &oid->oid))
 		RETURN_GITERROR();
 }
 
@@ -184,14 +181,13 @@ static zval *php_git2_revwalk_iterator_current_data(zend_object_iterator *iter) 
 
 static void php_git2_revwalk_iterator_move_forward(zend_object_iterator *iter) {
 	php_git2_revwalk_iterator *riter = Z_REVWALK_ITER_P(iter);
-	git_oid *oid = php_git2_oid_alloc();
+	object_init_ex(&riter->current, oid_class_entry);
+	oid_t *oid = Z_OID_P(&riter->current);
 	// here!
-	if (git_revwalk_next(oid, riter->revwalk->revwalk))
+	if (git_revwalk_next(&oid->oid, riter->revwalk->revwalk))
 		riter->more = false;
 	else
 		riter->more = true;
-
-	ZVAL_RES(&riter->current, zend_register_resource(oid, le_git_oid));
 }
 
 const zend_object_iterator_funcs php_git2_revwalk_iterator_funcs = {

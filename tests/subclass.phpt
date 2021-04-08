@@ -17,14 +17,14 @@ class Subclass extends Repository {
 	}
 
 	public function getCommit(string $oid) {
-		$oid = git_oid_fromstr($oid);
+		$oid = new Oid($oid);
 		return new Commit($this, $oid);
 	}
 }
 $repo = new Subclass("./tests/repo.git");
 
 $sha = "faa1fb22c4e0fb79bed3d3b7ea5901b7919fd131";
-$commit = new Commit($repo, git_oid_fromstr($sha));
+$commit = new Commit($repo, new Oid($sha));
 echo $commit->summary(), PHP_EOL;
 echo $repo->getCommit("faa1fb22c4e0fb79bed3d3b7ea5901b7919fd131")->summary(), PHP_EOL;
 

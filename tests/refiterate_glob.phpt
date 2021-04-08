@@ -11,19 +11,19 @@ if (!extension_loaded('git2')) {
 $repo = Repository::open_bare("./tests/repo.git");
 
 foreach ($repo->references() as $ref) {
-	echo $ref->name(), " ", git_oid_tostr($ref->target(), 8), PHP_EOL;
+	echo $ref->name(), " ", $ref->target()->__toString(8), PHP_EOL;
 }
 
 echo '======', PHP_EOL;
 
 foreach ($repo->references("refs/heads/msirabel*") as $ref) {
-	echo $ref->name(), " ", git_oid_tostr($ref->target(), 8), PHP_EOL;
+	echo $ref->name(), " ", $ref->target()->__toString(8), PHP_EOL;
 }
 
 echo '======', PHP_EOL;
 
 foreach ($repo->references("refs/tags/*") as $ref) {
-	echo $ref->name(), " ", git_oid_tostr($ref->target(), 8), PHP_EOL;
+	echo $ref->name(), " ", $ref->target()->__toString(8), PHP_EOL;
 }
 ?>
 --EXPECT--
