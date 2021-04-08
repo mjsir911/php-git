@@ -40,7 +40,7 @@ ZEND_METHOD(git_Revwalk, __construct) {
 	if (git_revwalk_new(&walker->revwalk, repo->repo))
 		RETURN_GITERROR();
 
-	zend_create_internal_iterator_zval(&walker->iter, ZEND_THIS);
+
 }
 
 ZEND_METHOD(git_Revwalk, push_range) {
@@ -118,96 +118,40 @@ ZEND_METHOD(git_Revwalk, hide_glob) {
 
 // begin iterator hell
 
+#include "commit.h"
 ZEND_METHOD(git_Revwalk, current) {
 	ZEND_PARSE_PARAMETERS_NONE();
 
-	zval *iter = &Z_REVWALK_P(ZEND_THIS)->iter;
-
-	zend_call_method_with_0_params(Z_OBJ(*iter), Z_OBJCE(*iter), NULL, "current", return_value);
+	revwalk_t *this = Z_REVWALK_P(ZEND_THIS);
+	object_init_ex(return_value, oid_class_entry);
+	oid_t *oid = Z_OID_P(return_value);
+	memcpy(&oid->oid, &this->oid, sizeof(oid->oid));
 }
 ZEND_METHOD(git_Revwalk, key) {
 	ZEND_PARSE_PARAMETERS_NONE();
-
-	zval *iter = &Z_REVWALK_P(ZEND_THIS)->iter;
-
-	zend_call_method_with_0_params(Z_OBJ(*iter), Z_OBJCE(*iter), NULL, "key", return_value);
 }
+#include <git2/errors.h>
 ZEND_METHOD(git_Revwalk, next) {
 	ZEND_PARSE_PARAMETERS_NONE();
-
-	zval *iter = &Z_REVWALK_P(ZEND_THIS)->iter;
-
-	zend_call_method_with_0_params(Z_OBJ(*iter), Z_OBJCE(*iter), NULL, "next", return_value);
+	revwalk_t *this = Z_REVWALK_P(ZEND_THIS);
+	switch (git_revwalk_next(&this->oid, this->revwalk)) {
+		case 0:
+			this->more = true;
+			break;
+		case GIT_ITEROVER:
+		default:
+			this->more = false;
+	}
 }
 ZEND_METHOD(git_Revwalk, rewind) {
 	ZEND_PARSE_PARAMETERS_NONE();
-
-	zval *iter = &Z_REVWALK_P(ZEND_THIS)->iter;
-
-	zend_call_method_with_0_params(Z_OBJ(*iter), Z_OBJCE(*iter), NULL, "rewind", return_value);
+	// do it once
+	zim_git_Revwalk_next(execute_data, return_value);
 }
 ZEND_METHOD(git_Revwalk, valid) {
 	ZEND_PARSE_PARAMETERS_NONE();
 
-	zval *iter = &Z_REVWALK_P(ZEND_THIS)->iter;
+	revwalk_t *this = Z_REVWALK_P(ZEND_THIS);
 
-	zend_call_method_with_0_params(Z_OBJ(*iter), Z_OBJCE(*iter), NULL, "valid", return_value);
-}
-
-typedef struct {
-	revwalk_t *revwalk;
-	zval current;
-	bool more;
-	zend_object_iterator iter;
-} php_git2_revwalk_iterator;
-
-#define Z_REVWALK_ITER_P(obj) ((php_git2_revwalk_iterator *)((char *)(obj) - XtOffsetOf(php_git2_revwalk_iterator, iter)));
-
-static void php_git2_revwalk_iterator_dtor(zend_object_iterator *iter) {
-	php_git2_revwalk_iterator *riter = Z_REVWALK_ITER_P(iter);
-	zval_ptr_dtor(&riter->iter.data);
-	efree(riter);
-}
-
-static int php_git2_revwalk_iterator_valid(zend_object_iterator *iter) {
-	php_git2_revwalk_iterator *riter = Z_REVWALK_ITER_P(iter);
-	return riter->more ? SUCCESS : FAILURE;
-}
-
-static zval *php_git2_revwalk_iterator_current_data(zend_object_iterator *iter) {
-	php_git2_revwalk_iterator *riter = Z_REVWALK_ITER_P(iter);
-	return &riter->current;
-}
-
-static void php_git2_revwalk_iterator_move_forward(zend_object_iterator *iter) {
-	php_git2_revwalk_iterator *riter = Z_REVWALK_ITER_P(iter);
-	object_init_ex(&riter->current, oid_class_entry);
-	oid_t *oid = Z_OID_P(&riter->current);
-	// here!
-	if (git_revwalk_next(&oid->oid, riter->revwalk->revwalk))
-		riter->more = false;
-	else
-		riter->more = true;
-}
-
-const zend_object_iterator_funcs php_git2_revwalk_iterator_funcs = {
-	php_git2_revwalk_iterator_dtor,
-	php_git2_revwalk_iterator_valid,
-	php_git2_revwalk_iterator_current_data,
-	NULL, /* current_key */
-	php_git2_revwalk_iterator_move_forward,
-	NULL, /* rewind */
-	NULL, /* invalidate_current */
-	NULL, /* get_gc */
-};
-
-zend_object_iterator *php_git2_revwalk_get_iterator(zend_class_entry *ce, zval *object, int by_ref) {
-	php_git2_revwalk_iterator *riter = emalloc(sizeof(php_git2_revwalk_iterator));
-	zend_iterator_init(&riter->iter);
-
-	ZVAL_OBJ_COPY(&riter->iter.data, Z_OBJ_P(object));
-	riter->iter.funcs = &php_git2_revwalk_iterator_funcs;
-	riter->revwalk = Z_REVWALK_P(object);
-	php_git2_revwalk_iterator_move_forward(&riter->iter); // do it once
-	return &riter->iter;
+	RETURN_BOOL(this->more);
 }

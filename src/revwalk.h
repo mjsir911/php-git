@@ -11,7 +11,8 @@ extern zend_object_handlers revwalk_object_handlers;
 
 typedef struct revwalk_t {
 	git_revwalk *revwalk;
-	zval iter;
+	git_oid oid;
+	bool more;
 	zend_object std;
 } revwalk_t;
 
@@ -37,7 +38,6 @@ extern zend_object_iterator *php_git2_revwalk_get_iterator(zend_class_entry *ce,
 	INIT_CLASS_ENTRY(ce_revwalk, "Revwalk", class_git_Revwalk_methods)
 	revwalk_class_entry = zend_register_internal_class(&ce_revwalk);
 	revwalk_class_entry->create_object = php_git2_revwalk_new;
-	revwalk_class_entry->get_iterator = php_git2_revwalk_get_iterator;
 	zend_class_implements(revwalk_class_entry, 1, zend_ce_iterator);
 
 	memcpy(&revwalk_object_handlers, &std_object_handlers, sizeof(zend_object_handlers));
