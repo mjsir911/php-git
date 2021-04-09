@@ -9,6 +9,9 @@ namespace git {
 		// public function target_type(): mixed {}
 		public function name(): string {}
 		public function tagger(): Signature {}
+		// this is for polymorphism with git\Commit
+		/** @implementation-alias git\Tag::tagger */
+		public function author(): Signature {}
 		public function message(): string {}
 		public function __debugInfo(): array {}
 	}
