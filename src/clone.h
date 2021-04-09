@@ -1,11 +1,17 @@
+#ifdef XF
+XF(clone)
+#else
 #ifndef PHP_GIT2_CLONE
 #define PHP_GIT2_CLONE
 #include <php.h>
 
 #include "clone_arginfo.h"
 
-PHP_FUNCTION(git_clone);
 
-#elif defined REGISTER_FUNCTION
-	REGISTER_FUNCTION(git_clone)
+// oh my god
+#define XF(fn) ZEND_FUNCTION(git_##fn);
+#include __FILE__
+#undef XF
+
+#endif
 #endif

@@ -1,24 +1,21 @@
 #include <php.h>
 #include <ext/standard/info.h>
 #include <git2.h>
+#include <zend_API.h>
 #include "php_git2.h"
 
 #define MAIN
 #include "types.h"
 #undef MAIN
 
-#define REGISTER_FUNCTION(func) PHP_FUNCTION(func);
-#include "types.h"
-#undef REGISTER_FUNCTION
-
 ZEND_DECLARE_MODULE_GLOBALS(git2);
 
 
 
 static zend_function_entry php_git2_functions[] = {
-	#define REGISTER_FUNCTION(func) ZEND_FE(func, arginfo_##func)
+	#define XF(func) ZEND_NS_FENTRY("git", func, ZEND_FN(git_##func), arginfo_git_##func, 0)
 	#include "types.h"
-	#undef REGISTER_FUNCTION
+	#undef XF
 	ZEND_FE_END
 };
 

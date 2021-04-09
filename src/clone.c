@@ -4,7 +4,7 @@
 #include <git2/clone.h>
 #include "error.h"
 
-PHP_FUNCTION(git_clone)
+ZEND_FUNCTION(git_clone)
 {
 	object_init_ex(return_value, repository_class_entry);
 	repository_t *repo = Z_REPOSITORY_P(return_value);

@@ -10,7 +10,7 @@ if (!extension_loaded('git2')) {
 <?php
 include "tests/utils.inc";
 $path = __DIR__ . "/php-git-test.git";
-$repo = git_clone(TEST_REPO, $path);
+$repo = git\clone(TEST_REPO, $path);
 echo is_dir($path);
 ?>
 --CLEAN--
