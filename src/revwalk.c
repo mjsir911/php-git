@@ -99,7 +99,7 @@ ZEND_METHOD(git_Revwalk, hide) {
 	oid_t *oid = Z_OID_P(oid_dp);
 	revwalk_t *revwalk = Z_REVWALK_P(ZEND_THIS);
 
-	if (GE(git_revwalk_hide(revwalk->revwalk, &oid->oid)))
+	if (GE(git_revwalk_hide(revwalk->revwalk, oid->oid)))
 		RETURN_THROWS();
 }
 
@@ -125,7 +125,7 @@ ZEND_METHOD(git_Revwalk, current) {
 	revwalk_t *this = Z_REVWALK_P(ZEND_THIS);
 	object_init_ex(return_value, oid_class_entry);
 	oid_t *oid = Z_OID_P(return_value);
-	memcpy(&oid->oid, &this->oid, sizeof(oid->oid));
+	memcpy(oid->oid, &this->oid, sizeof(*oid->oid));
 }
 ZEND_METHOD(git_Revwalk, key) {
 	ZEND_PARSE_PARAMETERS_NONE();

@@ -43,7 +43,7 @@ ZEND_METHOD(git_Repository, lookup_tag) {
 
 	object_init_ex(return_value, tag_class_entry);
 	tag_t *out = Z_TAG_P(return_value);
-	if (GE(git_tag_lookup(&out->tag, repo->obj, &id->oid)))
+	if (GE(git_tag_lookup(&out->tag, repo->obj, id->oid)))
 		RETURN_THROWS();
 	if (!out->tag)
 		RETURN_NULL();
@@ -92,7 +92,7 @@ ZEND_METHOD(git_Tag, target_id) {
 
 	object_init_ex(return_value, oid_class_entry);
 	oid_t *oid = Z_OID_P(return_value);
-	memcpy(&oid->oid, git_tag_target_id(tag->tag), sizeof(oid->oid));
+	memcpy(oid->oid, git_tag_target_id(tag->tag), sizeof(*oid->oid));
 }
 
 ZEND_METHOD(git_Tag, id) {
@@ -102,7 +102,7 @@ ZEND_METHOD(git_Tag, id) {
 
 	object_init_ex(return_value, oid_class_entry);
 	oid_t *oid = Z_OID_P(return_value);
-	memcpy(&oid->oid, git_tag_id(tag->tag), sizeof(oid->oid));
+	memcpy(oid->oid, git_tag_id(tag->tag), sizeof(*oid->oid));
 }
 #include "signature.h"
 ZEND_METHOD(git_Tag, tagger) {

@@ -37,7 +37,7 @@ ZEND_METHOD(git_Commit, __construct) {
 	oid_t *oid = Z_OID_P(oid_dp);
 
 	commit_t *commit = Z_COMMIT_P(ZEND_THIS);
-	if (GE(git_commit_lookup(&commit->commit, repo->obj, &oid->oid)))
+	if (GE(git_commit_lookup(&commit->commit, repo->obj, oid->oid)))
 		RETURN_THROWS();
 }
 
@@ -48,7 +48,7 @@ ZEND_METHOD(git_Commit, id) {
 
 	object_init_ex(return_value, oid_class_entry);
 	oid_t *oid = Z_OID_P(return_value);
-	memcpy(&oid->oid, git_commit_id(commit->commit), sizeof(oid->oid));
+	memcpy(oid->oid, git_commit_id(commit->commit), sizeof(*oid->oid));
 }
 
 ZEND_METHOD(git_Commit, message_encoding) {
@@ -129,5 +129,5 @@ ZEND_METHOD(git_Commit, tree_id) {
 
 	object_init_ex(return_value, oid_class_entry);
 	oid_t *oid = Z_OID_P(return_value);
-	memcpy(&oid->oid, git_commit_tree_id(commit->commit), sizeof(oid->oid));
+	memcpy(oid->oid, git_commit_tree_id(commit->commit), sizeof(*oid->oid));
 }

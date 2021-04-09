@@ -79,7 +79,7 @@ ZEND_METHOD(git_Reference, name_to_id) {
 	object_init_ex(return_value, oid_class_entry);
 	oid_t *oid = Z_OID_P(return_value);
 
-	if (GE(git_reference_name_to_id(&oid->oid, repo->obj, ZSTR_VAL(name))))
+	if (GE(git_reference_name_to_id(oid->oid, repo->obj, ZSTR_VAL(name))))
 		RETURN_THROWS();
 }
 
@@ -96,7 +96,7 @@ ZEND_METHOD(git_Reference, target) {
 	if (!(tmpoid = git_reference_target(ref->reference)))
 		RETURN_NULL();
 
-	memcpy(&oid->oid, tmpoid, sizeof(oid->oid));
+	memcpy(oid->oid, tmpoid, sizeof(*oid->oid));
 }
 
 ZEND_METHOD(git_Reference, name) {

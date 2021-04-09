@@ -9,7 +9,7 @@ extern zend_class_entry *oid_class_entry;
 extern zend_object_handlers oid_object_handlers;
 
 typedef struct oid_t {
-	git_oid oid;
+	git_oid *oid;
 	zend_object std;
 } oid_t;
 
