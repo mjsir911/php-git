@@ -7,3 +7,4 @@
 #include "reference.h"
 #include "reference_iterator.h"
 #include "tag.h"
+#include "revparse.h"
