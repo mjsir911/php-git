@@ -1,0 +1,8 @@
+64806db6955b90da39203a9bdb7285efffdd1402	refs/heads/master
+2596aeb1571a99b1bd7837088cea0ac26c963625	refs/heads/msirabella/fix/importable
+25d231de78d3e1cc68018c342b84840aa4be209c	refs/heads/msirabella/foobar
+0bc92598491cfa2e53a170130f81f33b5479d6af	refs/tags/neg_1
+faa1fb22c4e0fb79bed3d3b7ea5901b7919fd131	refs/tags/neg_1^{}
+64806db6955b90da39203a9bdb7285efffdd1402	refs/tags/tests-depend-on-this-being-head
+27a4130713568080615800200f02365b904e797d	refs/tags/v0.0
+faa1fb22c4e0fb79bed3d3b7ea5901b7919fd131	refs/tags/v0.0^{}

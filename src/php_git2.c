@@ -20,6 +20,7 @@ static zend_function_entry php_git2_functions[] = {
 };
 
 PHP_MINIT_FUNCTION(git2) {
+	git_libgit2_init();
 	#define REGISTER_RESOURCE(le_res_id, free_func, name) le_res_id = zend_register_list_destructors_ex(free_func,   NULL, name,   module_number);
 	#include "types.h"
 	#undef REGISTER_RESOURCE
@@ -28,15 +29,14 @@ PHP_MINIT_FUNCTION(git2) {
 }
 
 PHP_MSHUTDOWN_FUNCTION(git2) {
+	int error = git_libgit2_shutdown();
 	return SUCCESS;
 }
 
 PHP_RINIT_FUNCTION(git2) {
-	int error = git_libgit2_init();
 	return SUCCESS;
 }
 PHP_RSHUTDOWN_FUNCTION(git2) {
-	int error = git_libgit2_shutdown();
 	return SUCCESS;
 }
 PHP_MINFO_FUNCTION(git2) {
