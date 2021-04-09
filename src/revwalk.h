@@ -3,6 +3,7 @@
 #include <php.h>
 #include <git2/revwalk.h>
 #include <zend_interfaces.h>
+#include "oid.h"
 
 #include "revwalk_arginfo.h"
 
@@ -11,8 +12,7 @@ extern zend_object_handlers revwalk_object_handlers;
 
 typedef struct revwalk_t {
 	git_revwalk *revwalk;
-	git_oid oid;
-	bool more;
+	oid_t *oid;
 	zend_object std;
 } revwalk_t;
 

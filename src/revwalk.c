@@ -123,10 +123,13 @@ ZEND_METHOD(git_Revwalk, current) {
 	ZEND_PARSE_PARAMETERS_NONE();
 
 	revwalk_t *this = Z_REVWALK_P(ZEND_THIS);
-	object_init_ex(return_value, oid_class_entry);
-	oid_t *oid = Z_OID_P(return_value);
-	memcpy(oid->oid, &this->oid, sizeof(*oid->oid));
+
+	if (!this->oid)
+		RETURN_NULL();
+
+	RETURN_OBJ(&this->oid->std);
 }
+
 ZEND_METHOD(git_Revwalk, key) {
 	ZEND_PARSE_PARAMETERS_NONE();
 }
@@ -134,15 +137,29 @@ ZEND_METHOD(git_Revwalk, key) {
 ZEND_METHOD(git_Revwalk, next) {
 	ZEND_PARSE_PARAMETERS_NONE();
 	revwalk_t *this = Z_REVWALK_P(ZEND_THIS);
-	switch (git_revwalk_next(&this->oid, this->revwalk)) {
+
+	// if (this->oid) {
+	// 	zval __old;
+	// 	ZVAL_OBJ(&__old, &this->oid->std);
+
+	// 	if (!Z_ISUNDEF(__old)) {
+	// 		zval_ptr_dtor(&__old);
+	// 		ZVAL_UNDEF(&__old);
+	// 	}
+	// }
+
+	zval new_oid;
+	object_init_ex(&new_oid, oid_class_entry);
+	this->oid = Z_OID_P(&new_oid);
+	switch (git_revwalk_next(this->oid->oid, this->revwalk)) {
 		case 0:
-			this->more = true;
 			break;
 		case GIT_ITEROVER:
 		default:
-			this->more = false;
+			this->oid = NULL;
 	}
 }
+
 ZEND_METHOD(git_Revwalk, rewind) {
 	ZEND_PARSE_PARAMETERS_NONE();
 	// do it once
@@ -153,5 +170,5 @@ ZEND_METHOD(git_Revwalk, valid) {
 
 	revwalk_t *this = Z_REVWALK_P(ZEND_THIS);
 
-	RETURN_BOOL(this->more);
+	RETURN_BOOL(this->oid);
 }

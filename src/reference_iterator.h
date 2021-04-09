@@ -3,6 +3,7 @@
 #include <php.h>
 #include <git2/refs.h>
 #include <zend_interfaces.h>
+#include "reference.h"
 
 #include "reference_iterator_arginfo.h"
 
@@ -11,7 +12,7 @@ extern zend_object_handlers reference_iterator_object_handlers;
 
 typedef struct reference_iterator_t {
 	git_reference_iterator *reference_iterator;
-	git_reference *current;
+	reference_t *current;
 	zend_object std;
 } reference_iterator_t;
 

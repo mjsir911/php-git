@@ -25,9 +25,6 @@ void php_git2_reference_iterator_free(zend_object *obj) {
 	if (iter->reference_iterator) {
 		git_reference_iterator_free(iter->reference_iterator);
 	}
-	if (iter->current) {
-		git_reference_free(iter->current);
-	}
 	zend_object_std_dtor(&iter->std);
 }
 
@@ -60,11 +57,10 @@ ZEND_METHOD(git_ReferenceIterator, current) {
 
 	reference_iterator_t *iter = Z_REFERENCE_ITERATOR_P(ZEND_THIS);
 
-	object_init_ex(return_value, reference_class_entry);
-	reference_t *ref = Z_REFERENCE_P(return_value);
+	if (!iter->current)
+		RETURN_NULL();
 
-	git_reference_dup(&ref->reference, iter->current);
-	RETURN_OBJ(&ref->std);
+	RETURN_OBJ(&iter->current->std);
 }
 
 ZEND_METHOD(git_ReferenceIterator, key) {
@@ -72,7 +68,10 @@ ZEND_METHOD(git_ReferenceIterator, key) {
 
 	reference_iterator_t *iter = Z_REFERENCE_ITERATOR_P(ZEND_THIS);
 
-	RETURN_STRING(git_reference_name(iter->current));
+	if (!iter->current)
+		RETURN_NULL();
+
+	RETURN_STRING(git_reference_name(iter->current->reference));
 }
 
 ZEND_METHOD(git_ReferenceIterator, next) {
@@ -80,7 +79,20 @@ ZEND_METHOD(git_ReferenceIterator, next) {
 
 	reference_iterator_t *iter = Z_REFERENCE_ITERATOR_P(ZEND_THIS);
 
-	switch (GE(git_reference_next(&iter->current, iter->reference_iterator))) {
+	// if (iter->current) {
+	// 	zval __old;
+	// 	ZVAL_OBJ(&__old, &iter->current->std);
+
+	// 	if (!Z_ISUNDEF(__old)) {
+	// 		zval_ptr_dtor(&__old);
+	// 		ZVAL_UNDEF(&__old);
+	// 	}
+	// }
+
+	zval new;
+	object_init_ex(&new, reference_class_entry);
+	iter->current = Z_REFERENCE_P(&new);
+	switch (GE(git_reference_next(&iter->current->reference, iter->reference_iterator))) {
 		case 0:
 			break;
 		case GIT_ITEROVER:
