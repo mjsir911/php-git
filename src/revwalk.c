@@ -37,8 +37,8 @@ ZEND_METHOD(git_Revwalk, __construct) {
 
 
 	revwalk_t *walker = Z_REVWALK_P(ZEND_THIS);
-	if (git_revwalk_new(&walker->revwalk, repo->repo))
-		RETURN_GITERROR();
+	if (GE(git_revwalk_new(&walker->revwalk, repo->repo)))
+		RETURN_THROWS();
 
 
 }
@@ -51,8 +51,8 @@ ZEND_METHOD(git_Revwalk, push_range) {
 
 	revwalk_t *revwalk = Z_REVWALK_P(ZEND_THIS);
 
-	if (git_revwalk_push_range(revwalk->revwalk, ZSTR_VAL(range)))
-		RETURN_GITERROR();
+	if (GE(git_revwalk_push_range(revwalk->revwalk, ZSTR_VAL(range))))
+		RETURN_THROWS();
 
 	RETURN_NULL();
 }
@@ -62,8 +62,8 @@ ZEND_METHOD(git_Revwalk, push_head) {
 
 	revwalk_t *revwalk = Z_REVWALK_P(ZEND_THIS);
 
-	if (git_revwalk_push_head(revwalk->revwalk))
-		RETURN_GITERROR();
+	if (GE(git_revwalk_push_head(revwalk->revwalk)))
+		RETURN_THROWS();
 }
 
 ZEND_METHOD(git_Revwalk, push_ref) {
@@ -74,8 +74,8 @@ ZEND_METHOD(git_Revwalk, push_ref) {
 
 	revwalk_t *revwalk = Z_REVWALK_P(ZEND_THIS);
 
-	if (git_revwalk_push_ref(revwalk->revwalk, ZSTR_VAL(ref)))
-		RETURN_GITERROR();
+	if (GE(git_revwalk_push_ref(revwalk->revwalk, ZSTR_VAL(ref))))
+		RETURN_THROWS();
 }
 
 ZEND_METHOD(git_Revwalk, push_glob) {
@@ -86,8 +86,8 @@ ZEND_METHOD(git_Revwalk, push_glob) {
 
 	revwalk_t *revwalk = Z_REVWALK_P(ZEND_THIS);
 
-	if (git_revwalk_push_glob(revwalk->revwalk, ZSTR_VAL(glob)))
-		RETURN_GITERROR();
+	if (GE(git_revwalk_push_glob(revwalk->revwalk, ZSTR_VAL(glob))))
+		RETURN_THROWS();
 }
 
 ZEND_METHOD(git_Revwalk, hide) {
@@ -99,8 +99,8 @@ ZEND_METHOD(git_Revwalk, hide) {
 	oid_t *oid = Z_OID_P(oid_dp);
 	revwalk_t *revwalk = Z_REVWALK_P(ZEND_THIS);
 
-	if (git_revwalk_hide(revwalk->revwalk, &oid->oid))
-		RETURN_GITERROR();
+	if (GE(git_revwalk_hide(revwalk->revwalk, &oid->oid)))
+		RETURN_THROWS();
 }
 
 ZEND_METHOD(git_Revwalk, hide_glob) {
@@ -111,8 +111,8 @@ ZEND_METHOD(git_Revwalk, hide_glob) {
 
 	revwalk_t *revwalk = Z_REVWALK_P(ZEND_THIS);
 
-	if (git_revwalk_hide_glob(revwalk->revwalk, ZSTR_VAL(glob)))
-		RETURN_GITERROR();
+	if (GE(git_revwalk_hide_glob(revwalk->revwalk, ZSTR_VAL(glob))))
+		RETURN_THROWS();
 }
 
 

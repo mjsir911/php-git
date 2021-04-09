@@ -13,4 +13,8 @@ if (!extension_loaded('git2')) {
 Repository::open("/dev/null")
 ?>
 --EXPECTF--
-Warning: Repository::open(): could not find repository from '/dev/null' in %s on line 4
+Fatal error: Uncaught Exception: could not find repository from '/dev/null' in %s/tests/101samples/best_practices/errors.php:4
+Stack trace:
+#0 %s/tests/101samples/best_practices/errors.php(4): Repository->open('/dev/null')
+#1 {main}
+  thrown in %s/tests/101samples/best_practices/errors.php on line 4

@@ -25,8 +25,8 @@ PHP_METHOD(git_Oid, __construct) {
 	ZEND_PARSE_PARAMETERS_END();
 
 	oid_t *this = Z_OID_P(ZEND_THIS);
-	if (git_oid_fromstr(&this->oid, ZSTR_VAL(sha)))
-		RETURN_GITERROR();
+	if (GE(git_oid_fromstr(&this->oid, ZSTR_VAL(sha))))
+		RETURN_THROWS();
 }
 
 PHP_METHOD(git_Oid, __toString) {

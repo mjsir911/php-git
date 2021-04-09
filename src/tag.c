@@ -43,8 +43,8 @@ ZEND_METHOD(git_Repository, lookup_tag) {
 
 	object_init_ex(return_value, tag_class_entry);
 	tag_t *out = Z_TAG_P(return_value);
-	if (git_tag_lookup(&out->tag, repo->repo, &id->oid))
-		RETURN_GITERROR();
+	if (GE(git_tag_lookup(&out->tag, repo->repo, &id->oid)))
+		RETURN_THROWS();
 	if (!out->tag)
 		RETURN_NULL();
 }

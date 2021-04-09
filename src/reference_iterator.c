@@ -80,11 +80,15 @@ ZEND_METHOD(git_ReferenceIterator, next) {
 
 	reference_iterator_t *iter = Z_REFERENCE_ITERATOR_P(ZEND_THIS);
 
-	int err = git_reference_next(&iter->current, iter->reference_iterator);
-	if (err == GIT_ITEROVER)
-		iter->current = NULL;
-	else if (err)
-		RETURN_GITERROR();
+	switch (GE(git_reference_next(&iter->current, iter->reference_iterator))) {
+		case 0:
+			break;
+		case GIT_ITEROVER:
+			iter->current = NULL;
+			break;
+		default:
+			RETURN_THROWS();
+	}
 }
 
 ZEND_METHOD(git_ReferenceIterator, rewind) {

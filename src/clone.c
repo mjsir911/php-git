@@ -17,8 +17,8 @@ PHP_FUNCTION(git_clone)
 		"SS|b", &url, &local_path, &bare) == FAILURE)
 		return;
 
-	if (0 > git_clone(&repo->repo, ZSTR_VAL(url), ZSTR_VAL(local_path), &_options))
-		RETURN_GITERROR();
+	if (GE(git_clone(&repo->repo, ZSTR_VAL(url), ZSTR_VAL(local_path), &_options)))
+		RETURN_THROWS();
 
 	RETURN_OBJ(&repo->std);
 }
