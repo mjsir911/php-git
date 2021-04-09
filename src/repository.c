@@ -14,7 +14,7 @@ ZEND_METHOD(git_Repository, __construct) {
 
 	repository_t *repo = Z_REPOSITORY_P(ZEND_THIS);
 
-	if (GE(git_repository_open_bare(&repo->obj, ZSTR_VAL(bare_path))))
+	if (GE(git_repository_open_bare(&O(repo), ZSTR_VAL(bare_path))))
 		RETURN_THROWS();
 }
 
@@ -30,7 +30,7 @@ ZEND_METHOD(git_Repository, init) {
 		RETURN_THROWS();
 	}
 
-	if (GE(git_repository_init(&repo->obj, ZSTR_VAL(path), is_bare)))
+	if (GE(git_repository_init(&O(repo), ZSTR_VAL(path), is_bare)))
 		RETURN_THROWS();
 
 	RETURN_OBJ(&repo->std);
@@ -44,7 +44,7 @@ ZEND_METHOD(git_Repository, open) {
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "P", &path) == FAILURE)
 		RETURN_THROWS();
 
-	if (GE(git_repository_open(&repo->obj, ZSTR_VAL(path))))
+	if (GE(git_repository_open(&O(repo), ZSTR_VAL(path))))
 		RETURN_THROWS();
 
 	RETURN_OBJ(&repo->std);
@@ -95,8 +95,8 @@ ZEND_METHOD(git_Repository, commondir) {
 	}
 
 	repository_t *repo = Z_REPOSITORY_P(ZEND_THIS);
-	if (!repo->obj)
+	if (!O(repo))
 		RETURN_THROWS();
 
-	RETURN_STRING(git_repository_commondir(repo->obj));
+	RETURN_STRING(git_repository_commondir(O(repo)));
 }

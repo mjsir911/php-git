@@ -23,11 +23,11 @@ ZEND_METHOD(git_Repository, references) {
 	repository_t *repo = Z_REPOSITORY_P(ZEND_THIS);
 
 	if (glob)
-		git_reference_iterator_glob_new(&iter->obj, repo->obj, ZSTR_VAL(glob));
+		git_reference_iterator_glob_new(&O(iter), O(repo), ZSTR_VAL(glob));
 	else
-		git_reference_iterator_new(&iter->obj, repo->obj);
+		git_reference_iterator_new(&O(iter), O(repo));
 
-	// git_reference_next(&iter->current, iter->obj); // do it once
+	// git_reference_next(&iter->current, O(iter)); // do it once
 	zend_call_method_with_0_params(Z_OBJ_P(return_value), Z_OBJCE_P(return_value), NULL, "next", NULL);
 }
 
@@ -50,7 +50,7 @@ ZEND_METHOD(git_ReferenceIterator, key) {
 	if (!iter->current)
 		RETURN_NULL();
 
-	RETURN_STRING(git_reference_name(iter->current->obj));
+	RETURN_STRING(git_reference_name(O(iter->current)));
 }
 
 ZEND_METHOD(git_ReferenceIterator, next) {
@@ -71,7 +71,7 @@ ZEND_METHOD(git_ReferenceIterator, next) {
 	zval new;
 	object_init_ex(&new, reference_class_entry);
 	iter->current = Z_REFERENCE_P(&new);
-	switch (GE(git_reference_next(&iter->current->obj, iter->obj))) {
+	switch (GE(git_reference_next(&O(iter->current), O(iter)))) {
 		case 0:
 			break;
 		case GIT_ITEROVER:

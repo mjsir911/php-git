@@ -5,6 +5,11 @@
 #define CE(T) JOIN(T, class_entry)
 #define OH(T) JOIN(T, object_handlers)
 
+#ifndef GITOBJ_COMMON_DEFS
+#define GITOBJ_COMMON_DEFS
+#define O(o) ((o)->obj)
+#endif
+
 extern zend_class_entry *CE(T);
 
 #define A JOIN(T, t)
@@ -50,8 +55,8 @@ zend_object *PG2(new)(zend_class_entry *ce) {
 void PG2(free)(zend_object *zobj) {
 	A *obj = PG2(from_obj)(zobj);
 
-	if (obj->obj) {
-		JOIN(G, free)(obj->obj);
+	if (O(obj)) {
+		JOIN(G, free)(O(obj));
 	}
 	zend_object_std_dtor(&obj->std);
 }

@@ -10,7 +10,7 @@ ZEND_METHOD(git_Signature, name) {
 
 	signature_t *signature = Z_SIGNATURE_P(ZEND_THIS);
 
-	RETURN_STRING(signature->obj->name);
+	RETURN_STRING(O(signature)->name);
 }
 
 ZEND_METHOD(git_Signature, email) {
@@ -18,7 +18,7 @@ ZEND_METHOD(git_Signature, email) {
 
 	signature_t *signature = Z_SIGNATURE_P(ZEND_THIS);
 
-	RETURN_STRING(signature->obj->email);
+	RETURN_STRING(O(signature)->email);
 }
 
 /*
@@ -27,6 +27,6 @@ ZEND_METHOD(git_Signature, when) {
 
 	signature_t *signature = Z_SIGNATURE_P(ZEND_THIS);
 
-	RETURN_STRING(signature->obj->name);
+	RETURN_STRING(O(signature)->name);
 }
 */
