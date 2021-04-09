@@ -11,27 +11,6 @@
 #include "error.h"
 #include "object.h"
 
-zend_class_entry *tag_class_entry = NULL;
-zend_object_handlers tag_object_handlers;
-
-zend_object *php_git2_tag_new(zend_class_entry *ce) {
-	tag_t *iter = zend_object_alloc(sizeof(tag_t), ce);
-	zend_object_std_init(&iter->std, ce);
-	object_properties_init(&iter->std, ce);
-	iter->std.handlers = &tag_object_handlers;
-	return &iter->std;
-}
-
-void php_git2_tag_free(zend_object *obj) {
-	tag_t *tag = php_git2_tag_from_obj(obj);
-
-	if (tag->tag) {
-		git_tag_free(tag->tag);
-	}
-	zend_object_std_dtor(&tag->std);
-}
-
-
 ZEND_METHOD(git_Repository, lookup_tag) {
 	zval *id_dp;
 	ZEND_PARSE_PARAMETERS_START(1, 1)
@@ -43,9 +22,9 @@ ZEND_METHOD(git_Repository, lookup_tag) {
 
 	object_init_ex(return_value, tag_class_entry);
 	tag_t *out = Z_TAG_P(return_value);
-	if (GE(git_tag_lookup(&out->tag, repo->obj, id->oid)))
+	if (GE(git_tag_lookup(&out->obj, repo->obj, id->obj)))
 		RETURN_THROWS();
-	if (!out->tag)
+	if (!out->obj)
 		RETURN_NULL();
 }
 
@@ -82,7 +61,7 @@ ZEND_METHOD(git_Tag, name) {
 
 	tag_t *tag = Z_TAG_P(ZEND_THIS);
 
-	RETURN_STRING(git_tag_name(tag->tag));
+	RETURN_STRING(git_tag_name(tag->obj));
 }
 
 ZEND_METHOD(git_Tag, target_id) {
@@ -92,7 +71,7 @@ ZEND_METHOD(git_Tag, target_id) {
 
 	object_init_ex(return_value, oid_class_entry);
 	oid_t *oid = Z_OID_P(return_value);
-	memcpy(oid->oid, git_tag_target_id(tag->tag), sizeof(*oid->oid));
+	memcpy(oid->obj, git_tag_target_id(tag->obj), sizeof(*oid->obj));
 }
 
 ZEND_METHOD(git_Tag, id) {
@@ -102,7 +81,7 @@ ZEND_METHOD(git_Tag, id) {
 
 	object_init_ex(return_value, oid_class_entry);
 	oid_t *oid = Z_OID_P(return_value);
-	memcpy(oid->oid, git_tag_id(tag->tag), sizeof(*oid->oid));
+	memcpy(oid->obj, git_tag_id(tag->obj), sizeof(*oid->obj));
 }
 #include "signature.h"
 ZEND_METHOD(git_Tag, tagger) {
@@ -112,7 +91,7 @@ ZEND_METHOD(git_Tag, tagger) {
 
 	object_init_ex(return_value, signature_class_entry);
 	signature_t *sig = Z_SIGNATURE_P(return_value);
-	if (git_signature_dup(&sig->signature, git_tag_tagger(this->tag)))
+	if (git_signature_dup(&sig->obj, git_tag_tagger(this->obj)))
 		RETURN_THROWS();
 }
 ZEND_METHOD(git_Tag, message) {
@@ -121,7 +100,7 @@ ZEND_METHOD(git_Tag, message) {
 	tag_t *this = Z_TAG_P(ZEND_THIS);
 
 	const char *message;
-	if (!(message = git_tag_message(this->tag)))
+	if (!(message = git_tag_message(this->obj)))
 		RETURN_THROWS();
 	RETURN_STRING(message);
 }

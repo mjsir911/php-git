@@ -3,12 +3,9 @@
 #include "oid.h"
 #include "error.h"
 
-zend_class_entry *oid_class_entry = NULL;
-zend_object_handlers oid_object_handlers;
-
 zend_object *php_git2_oid_new(zend_class_entry *ce) {
 	oid_t *this = zend_object_alloc(sizeof(oid_t), ce);
-	this->oid = emalloc(sizeof(*this->oid));
+	this->obj = emalloc(sizeof(*this->obj));
 	zend_object_std_init(&this->std, ce);
 	object_properties_init(&this->std, ce);
 	this->std.handlers = &oid_object_handlers;
@@ -17,8 +14,8 @@ zend_object *php_git2_oid_new(zend_class_entry *ce) {
 
 void php_git2_oid_free(zend_object *obj) {
 	oid_t *this = php_git2_oid_from_obj(obj);
-	if (this->oid)
-		efree(this->oid);
+	if (this->obj)
+		efree(this->obj);
 	zend_object_std_dtor(obj);
 }
 
@@ -29,7 +26,7 @@ PHP_METHOD(git_Oid, __construct) {
 	ZEND_PARSE_PARAMETERS_END();
 
 	oid_t *this = Z_OID_P(ZEND_THIS);
-	if (GE(git_oid_fromstr(this->oid, ZSTR_VAL(sha))))
+	if (GE(git_oid_fromstr(this->obj, ZSTR_VAL(sha))))
 		RETURN_THROWS();
 }
 
@@ -44,6 +41,6 @@ PHP_METHOD(git_Oid, __toString) {
 
 	len++; // for the trailing null
 	char buf[len];
-	git_oid_tostr(buf, len, this->oid);
+	git_oid_tostr(buf, len, this->obj);
 	RETURN_STRING(buf);
 }

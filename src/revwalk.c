@@ -7,26 +7,6 @@
 #include "oid.h"
 #include "error.h"
 
-zend_class_entry *revwalk_class_entry = NULL;
-zend_object_handlers revwalk_object_handlers;
-
-zend_object *php_git2_revwalk_new(zend_class_entry *ce) {
-	revwalk_t *revwalk = zend_object_alloc(sizeof(revwalk_t), ce);
-	zend_object_std_init(&revwalk->std, ce);
-	object_properties_init(&revwalk->std, ce);
-	revwalk->std.handlers = &revwalk_object_handlers;
-	return &revwalk->std;
-}
-
-void php_git2_revwalk_free(zend_object *obj) {
-	revwalk_t *revwalk = php_git2_revwalk_from_obj(obj);
-
-	if (revwalk->revwalk) {
-		git_revwalk_free(revwalk->revwalk);
-	}
-	zend_object_std_dtor(&revwalk->std);
-}
-
 ZEND_METHOD(git_Revwalk, __construct) {
 	zval *repo_dp;
 	ZEND_PARSE_PARAMETERS_START(1, 1)
@@ -37,7 +17,7 @@ ZEND_METHOD(git_Revwalk, __construct) {
 
 
 	revwalk_t *walker = Z_REVWALK_P(ZEND_THIS);
-	if (GE(git_revwalk_new(&walker->revwalk, repo->obj)))
+	if (GE(git_revwalk_new(&walker->obj, repo->obj)))
 		RETURN_THROWS();
 
 
@@ -51,7 +31,7 @@ ZEND_METHOD(git_Revwalk, push_range) {
 
 	revwalk_t *revwalk = Z_REVWALK_P(ZEND_THIS);
 
-	if (GE(git_revwalk_push_range(revwalk->revwalk, ZSTR_VAL(range))))
+	if (GE(git_revwalk_push_range(revwalk->obj, ZSTR_VAL(range))))
 		RETURN_THROWS();
 
 	RETURN_NULL();
@@ -62,7 +42,7 @@ ZEND_METHOD(git_Revwalk, push_head) {
 
 	revwalk_t *revwalk = Z_REVWALK_P(ZEND_THIS);
 
-	if (GE(git_revwalk_push_head(revwalk->revwalk)))
+	if (GE(git_revwalk_push_head(revwalk->obj)))
 		RETURN_THROWS();
 }
 
@@ -74,7 +54,7 @@ ZEND_METHOD(git_Revwalk, push_ref) {
 
 	revwalk_t *revwalk = Z_REVWALK_P(ZEND_THIS);
 
-	if (GE(git_revwalk_push_ref(revwalk->revwalk, ZSTR_VAL(ref))))
+	if (GE(git_revwalk_push_ref(revwalk->obj, ZSTR_VAL(ref))))
 		RETURN_THROWS();
 }
 
@@ -86,7 +66,7 @@ ZEND_METHOD(git_Revwalk, push_glob) {
 
 	revwalk_t *revwalk = Z_REVWALK_P(ZEND_THIS);
 
-	if (GE(git_revwalk_push_glob(revwalk->revwalk, ZSTR_VAL(glob))))
+	if (GE(git_revwalk_push_glob(revwalk->obj, ZSTR_VAL(glob))))
 		RETURN_THROWS();
 }
 
@@ -99,7 +79,7 @@ ZEND_METHOD(git_Revwalk, hide) {
 	oid_t *oid = Z_OID_P(oid_dp);
 	revwalk_t *revwalk = Z_REVWALK_P(ZEND_THIS);
 
-	if (GE(git_revwalk_hide(revwalk->revwalk, oid->oid)))
+	if (GE(git_revwalk_hide(revwalk->obj, oid->obj)))
 		RETURN_THROWS();
 }
 
@@ -111,7 +91,7 @@ ZEND_METHOD(git_Revwalk, hide_glob) {
 
 	revwalk_t *revwalk = Z_REVWALK_P(ZEND_THIS);
 
-	if (GE(git_revwalk_hide_glob(revwalk->revwalk, ZSTR_VAL(glob))))
+	if (GE(git_revwalk_hide_glob(revwalk->obj, ZSTR_VAL(glob))))
 		RETURN_THROWS();
 }
 
@@ -151,7 +131,7 @@ ZEND_METHOD(git_Revwalk, next) {
 	zval new_oid;
 	object_init_ex(&new_oid, oid_class_entry);
 	this->oid = Z_OID_P(&new_oid);
-	switch (git_revwalk_next(this->oid->oid, this->revwalk)) {
+	switch (git_revwalk_next(this->oid->obj, this->obj)) {
 		case 0:
 			break;
 		case GIT_ITEROVER:

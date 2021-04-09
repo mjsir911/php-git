@@ -35,10 +35,13 @@ PHP_MINIT_FUNCTION(git2) {
 	#define REGISTER_RESOURCE(le_res_id, free_func, name) le_res_id = zend_register_list_destructors_ex(free_func,   NULL, name,   module_number);
 	#include "types.h"
 	#undef REGISTER_RESOURCE
+	#undef X
+	#define XI(name, super) zend_class_implements(name##_class_entry, 1, super);
+	#include "types.h"
+	#undef XI
 	// php_register_url_stream_wrapper // I could use this to register git://
 	return SUCCESS;
 }
-#undef X
 
 PHP_MSHUTDOWN_FUNCTION(git2) {
 	int error = git_libgit2_shutdown();

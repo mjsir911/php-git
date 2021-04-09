@@ -20,14 +20,25 @@ typedef struct A {
 
 #define PG2(s) JOIN(JOIN(php_git2, T), s)
 
-inline A *PG2(from_obj)(zend_object *obj) {
-	return ((A *)((char *)(obj) - XtOffsetOf(A, std)));
-}
+A *PG2(from_obj)(zend_object *obj);
+
+extern zend_object *PG2(new)(zend_class_entry *);
+extern void PG2(free)(zend_object *zobj);
+
+#ifdef NOMAIN
+extern zend_object_handlers OH(T);
+#endif
 
 #ifdef MAIN
 zend_class_entry *CE(T) = NULL;
 zend_object_handlers OH(T);
 
+A *PG2(from_obj)(zend_object *obj) {
+	return ((A *)((char *)(obj) - XtOffsetOf(A, std)));
+}
+
+
+#ifndef NOMAIN
 zend_object *PG2(new)(zend_class_entry *ce) {
 	A *obj = zend_object_alloc(sizeof(A), ce);
 	zend_object_std_init(&obj->std, ce);
@@ -45,10 +56,13 @@ void PG2(free)(zend_object *zobj) {
 	zend_object_std_dtor(&obj->std);
 }
 #endif
+#endif
 
-
+#undef NOMAIN
 #undef CE
 #undef OH
 #undef A
 #undef G
 #undef PG2
+#undef E
+#undef T

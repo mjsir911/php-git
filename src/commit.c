@@ -6,26 +6,6 @@
 #include "signature.h"
 #include "error.h"
 
-zend_class_entry *commit_class_entry = NULL;
-zend_object_handlers commit_object_handlers;
-
-zend_object *php_git2_commit_new(zend_class_entry *ce) {
-	commit_t *commit = zend_object_alloc(sizeof(commit_t), ce);
-	zend_object_std_init(&commit->std, ce);
-	object_properties_init(&commit->std, ce);
-	commit->std.handlers = &commit_object_handlers;
-	return &commit->std;
-}
-
-void php_git2_commit_free(zend_object *obj) {
-	commit_t *commit = php_git2_commit_from_obj(obj);
-
-	if (commit->commit) {
-		git_commit_free(commit->commit);
-	}
-	zend_object_std_dtor(&commit->std);
-}
-
 ZEND_METHOD(git_Commit, __construct) {
 	zval *repo_dp, *oid_dp;
 	ZEND_PARSE_PARAMETERS_START(2, 2)
@@ -37,7 +17,7 @@ ZEND_METHOD(git_Commit, __construct) {
 	oid_t *oid = Z_OID_P(oid_dp);
 
 	commit_t *commit = Z_COMMIT_P(ZEND_THIS);
-	if (GE(git_commit_lookup(&commit->commit, repo->obj, oid->oid)))
+	if (GE(git_commit_lookup(&commit->obj, repo->obj, oid->obj)))
 		RETURN_THROWS();
 }
 
@@ -48,7 +28,7 @@ ZEND_METHOD(git_Commit, id) {
 
 	object_init_ex(return_value, oid_class_entry);
 	oid_t *oid = Z_OID_P(return_value);
-	memcpy(oid->oid, git_commit_id(commit->commit), sizeof(*oid->oid));
+	memcpy(oid->obj, git_commit_id(commit->obj), sizeof(*oid->obj));
 }
 
 ZEND_METHOD(git_Commit, message_encoding) {
@@ -57,7 +37,7 @@ ZEND_METHOD(git_Commit, message_encoding) {
 	commit_t *commit = Z_COMMIT_P(ZEND_THIS);
 
 	const char *msg_encoding;
-	if (!(msg_encoding = git_commit_message_encoding(commit->commit)))
+	if (!(msg_encoding = git_commit_message_encoding(commit->obj)))
 		RETURN_STRING("UTF-8");
 	char buf[strlen(msg_encoding) + 1];
 	strcpy(buf, msg_encoding);
@@ -70,7 +50,7 @@ ZEND_METHOD(git_Commit, message) {
 	commit_t *commit = Z_COMMIT_P(ZEND_THIS);
 
 	const char *commit_msg;
-	if (!(commit_msg = git_commit_message(commit->commit)))
+	if (!(commit_msg = git_commit_message(commit->obj)))
 		RETURN_THROWS();
 
 	char buf[strlen(commit_msg) + 1];
@@ -84,7 +64,7 @@ ZEND_METHOD(git_Commit, summary) {
 	commit_t *commit = Z_COMMIT_P(ZEND_THIS);
 
 	const char *commit_summary;
-	if (!(commit_summary = git_commit_summary(commit->commit)))
+	if (!(commit_summary = git_commit_summary(commit->obj)))
 		RETURN_THROWS();
 
 	char buf[strlen(commit_summary) + 1];
@@ -101,7 +81,7 @@ ZEND_METHOD(git_Commit, committer) {
 		php_git2_signature_new(signature_class_entry)
 	);
 
-	if (git_signature_dup(&sig->signature, git_commit_committer(commit->commit)))
+	if (git_signature_dup(&sig->obj, git_commit_committer(commit->obj)))
 		RETURN_THROWS();
 
 	RETURN_OBJ(&sig->std);
@@ -116,7 +96,7 @@ ZEND_METHOD(git_Commit, author) {
 		php_git2_signature_new(signature_class_entry)
 	);
 
-	if (git_signature_dup(&sig->signature, git_commit_author(commit->commit)))
+	if (git_signature_dup(&sig->obj, git_commit_author(commit->obj)))
 		RETURN_THROWS();
 
 	RETURN_OBJ(&sig->std);
@@ -129,5 +109,5 @@ ZEND_METHOD(git_Commit, tree_id) {
 
 	object_init_ex(return_value, oid_class_entry);
 	oid_t *oid = Z_OID_P(return_value);
-	memcpy(oid->oid, git_commit_tree_id(commit->commit), sizeof(*oid->oid));
+	memcpy(oid->obj, git_commit_tree_id(commit->obj), sizeof(*oid->obj));
 }

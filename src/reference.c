@@ -5,26 +5,6 @@
 #include "repository.h"
 #include "error.h"
 
-zend_class_entry *reference_class_entry = NULL;
-zend_object_handlers reference_object_handlers;
-
-zend_object *php_git2_reference_new(zend_class_entry *ce) {
-	reference_t *ref = zend_object_alloc(sizeof(reference_t), ce);
-	zend_object_std_init(&ref->std, ce);
-	object_properties_init(&ref->std, ce);
-	ref->std.handlers = &reference_object_handlers;
-	return &ref->std;
-}
-
-void php_git2_reference_free(zend_object *obj) {
-	reference_t *ref = php_git2_reference_from_obj(obj);
-
-	if (ref->reference) {
-		git_reference_free(ref->reference);
-	}
-	zend_object_std_dtor(&ref->std);
-}
-
 ZEND_METHOD(git_Reference, dwim) {
 	zval *repo_dp;
 	zend_string *shorthand;
@@ -39,7 +19,7 @@ ZEND_METHOD(git_Reference, dwim) {
 	object_init_ex(return_value, reference_class_entry);
 	reference_t *ref = Z_REFERENCE_P(return_value);
 
-	if (GE(git_reference_dwim(&ref->reference, repo->obj, ZSTR_VAL(shorthand))))
+	if (GE(git_reference_dwim(&ref->obj, repo->obj, ZSTR_VAL(shorthand))))
 		RETURN_THROWS();
 
 	RETURN_OBJ(&ref->std);
@@ -59,7 +39,7 @@ ZEND_METHOD(git_Reference, lookup) {
 	object_init_ex(return_value, reference_class_entry);
 	reference_t *ref = Z_REFERENCE_P(return_value);
 
-	if (GE(git_reference_lookup(&ref->reference, repo->obj, ZSTR_VAL(name))))
+	if (GE(git_reference_lookup(&ref->obj, repo->obj, ZSTR_VAL(name))))
 		RETURN_THROWS();
 
 	RETURN_OBJ(&ref->std);
@@ -79,7 +59,7 @@ ZEND_METHOD(git_Reference, name_to_id) {
 	object_init_ex(return_value, oid_class_entry);
 	oid_t *oid = Z_OID_P(return_value);
 
-	if (GE(git_reference_name_to_id(oid->oid, repo->obj, ZSTR_VAL(name))))
+	if (GE(git_reference_name_to_id(oid->obj, repo->obj, ZSTR_VAL(name))))
 		RETURN_THROWS();
 }
 
@@ -93,10 +73,10 @@ ZEND_METHOD(git_Reference, target) {
 
 	const git_oid *tmpoid;
 
-	if (!(tmpoid = git_reference_target(ref->reference)))
+	if (!(tmpoid = git_reference_target(ref->obj)))
 		RETURN_NULL();
 
-	memcpy(oid->oid, tmpoid, sizeof(*oid->oid));
+	memcpy(oid->obj, tmpoid, sizeof(*oid->obj));
 }
 
 ZEND_METHOD(git_Reference, name) {
@@ -104,5 +84,5 @@ ZEND_METHOD(git_Reference, name) {
 
 	reference_t *ref = Z_REFERENCE_P(ZEND_THIS);
 
-	RETURN_STRING(git_reference_name(ref->reference));
+	RETURN_STRING(git_reference_name(ref->obj));
 }
