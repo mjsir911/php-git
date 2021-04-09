@@ -37,7 +37,7 @@ ZEND_METHOD(git_Revwalk, __construct) {
 
 
 	revwalk_t *walker = Z_REVWALK_P(ZEND_THIS);
-	if (GE(git_revwalk_new(&walker->revwalk, repo->repo)))
+	if (GE(git_revwalk_new(&walker->revwalk, repo->obj)))
 		RETURN_THROWS();
 
 

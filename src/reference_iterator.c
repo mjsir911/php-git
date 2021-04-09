@@ -47,9 +47,9 @@ ZEND_METHOD(git_Repository, references) {
 	repository_t *repo = Z_REPOSITORY_P(ZEND_THIS);
 
 	if (glob)
-		git_reference_iterator_glob_new(&iter->reference_iterator, repo->repo, ZSTR_VAL(glob));
+		git_reference_iterator_glob_new(&iter->reference_iterator, repo->obj, ZSTR_VAL(glob));
 	else
-		git_reference_iterator_new(&iter->reference_iterator, repo->repo);
+		git_reference_iterator_new(&iter->reference_iterator, repo->obj);
 
 	// git_reference_next(&iter->current, iter->reference_iterator); // do it once
 	zend_call_method_with_0_params(Z_OBJ_P(return_value), Z_OBJCE_P(return_value), NULL, "next", NULL);

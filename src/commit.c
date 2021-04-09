@@ -37,7 +37,7 @@ ZEND_METHOD(git_Commit, __construct) {
 	oid_t *oid = Z_OID_P(oid_dp);
 
 	commit_t *commit = Z_COMMIT_P(ZEND_THIS);
-	if (GE(git_commit_lookup(&commit->commit, repo->repo, &oid->oid)))
+	if (GE(git_commit_lookup(&commit->commit, repo->obj, &oid->oid)))
 		RETURN_THROWS();
 }
 

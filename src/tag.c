@@ -43,7 +43,7 @@ ZEND_METHOD(git_Repository, lookup_tag) {
 
 	object_init_ex(return_value, tag_class_entry);
 	tag_t *out = Z_TAG_P(return_value);
-	if (GE(git_tag_lookup(&out->tag, repo->repo, &id->oid)))
+	if (GE(git_tag_lookup(&out->tag, repo->obj, &id->oid)))
 		RETURN_THROWS();
 	if (!out->tag)
 		RETURN_NULL();
@@ -61,15 +61,15 @@ ZEND_METHOD(git_Repository, tags) {
 
 	git_strarray tags;
 	if (pattern)
-		git_tag_list_match(&tags, ZSTR_VAL(pattern), repo->repo);
+		git_tag_list_match(&tags, ZSTR_VAL(pattern), repo->obj);
 	else
-		git_tag_list(&tags, repo->repo);
+		git_tag_list(&tags, repo->obj);
 
 
 	array_init(return_value);
 	for (char *const *tag = tags.strings; tag < tags.strings + tags.count; tag++) {
 		git_object *obj;
-		git_revparse_single(&obj, repo->repo, *tag);
+		git_revparse_single(&obj, repo->obj, *tag);
 
 		zval tmp;
 		ZVAL_OBJ(&tmp, php_git2_object_dispatch_new(obj));
@@ -155,7 +155,7 @@ int php_git2_tag_foreach_cb(const char *name, git_oid *oid, void *payload) {
 
 	git_object *git_obj;
 
-	git_object_lookup(&git_obj, fc->repo->repo, oid, GIT_OBJECT_ANY);
+	git_object_lookup(&git_obj, fc->repo->obj, oid, GIT_OBJECT_ANY);
 
 	ZVAL_OBJ(&args[0], php_git2_object_dispatch_new(git_obj));
 
@@ -176,5 +176,5 @@ ZEND_METHOD(git_Repository, foreach_tag) {
 	repository_t *repo = Z_REPOSITORY_P(ZEND_THIS);
 	fc.repo = repo;
 
-	git_tag_foreach(repo->repo, php_git2_tag_foreach_cb, &fc);
+	git_tag_foreach(repo->obj, php_git2_tag_foreach_cb, &fc);
 }

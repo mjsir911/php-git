@@ -2,7 +2,10 @@
 #include <ext/standard/info.h>
 #include <git2.h>
 #include "php_git2.h"
+
+#define MAIN
 #include "types.h"
+#undef MAIN
 
 #define REGISTER_FUNCTION(func) PHP_FUNCTION(func);
 #include "types.h"
@@ -19,6 +22,14 @@ static zend_function_entry php_git2_functions[] = {
 	ZEND_FE_END
 };
 
+#define X(name, Name) \
+	zend_class_entry ce_##name; \
+	INIT_CLASS_ENTRY(ce_##name, #Name, class_git_##Name##_methods) \
+  name##_class_entry = zend_register_internal_class(&ce_##name); \
+	name##_class_entry->create_object = php_git2_##name##_new; \
+	memcpy(&name##_object_handlers, &std_object_handlers, sizeof(zend_object_handlers)); \
+	name##_object_handlers.free_obj = php_git2_##name##_free; \
+	name##_object_handlers.offset = XtOffsetOf(name##_t, std);
 PHP_MINIT_FUNCTION(git2) {
 	git_libgit2_init();
 	#define REGISTER_RESOURCE(le_res_id, free_func, name) le_res_id = zend_register_list_destructors_ex(free_func,   NULL, name,   module_number);
@@ -27,6 +38,7 @@ PHP_MINIT_FUNCTION(git2) {
 	// php_register_url_stream_wrapper // I could use this to register git://
 	return SUCCESS;
 }
+#undef X
 
 PHP_MSHUTDOWN_FUNCTION(git2) {
 	int error = git_libgit2_shutdown();
