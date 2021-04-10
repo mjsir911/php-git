@@ -7,9 +7,9 @@ if test $PHP_GIT2 != "no"; then
 	PHP_ADD_SOURCES(src, repository_arginfo.h revwalk_arginfo.h clone_arginfo.h oid_arginfo.h commit_arginfo.h signature_arginfo.h reference_arginfo.h reference_iterator_arginfo.h tag_arginfo.h revparse_arginfo.h)
 	PHP_ADD_SOURCES_X(src, repository.c clone.c oid.c commit.c revwalk.c signature.c reference.c reference_iterator.c tag.c revparse.c,$ac_extra,shared_objects_git2,yes)
 
-	PHP_ADD_SOURCES_X(src, object.c,$ac_extra,shared_objects_git2,yes)
+	PHP_ADD_SOURCES_X(src, error.c object.c php_git2.c,$ac_extra,shared_objects_git2,yes)
 
-	PHP_NEW_EXTENSION(git2, src/error.c src/php_git2.c, $ext_shared)
+	PHP_NEW_EXTENSION(git2,,$ext_shared)
 
 	PKG_CHECK_MODULES([LIBGIT2], [libgit2 >= 1.1.0])
 
