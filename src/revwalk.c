@@ -23,6 +23,21 @@ ZEND_METHOD(git_Revwalk, __construct) {
 
 }
 
+ZEND_METHOD(git_Revwalk, push) {
+	zval *repo_dp, *oid_dp;
+	ZEND_PARSE_PARAMETERS_START(1, 1)
+		Z_PARAM_OBJECT_OF_CLASS(oid_dp, oid_class_entry)
+	ZEND_PARSE_PARAMETERS_END();
+
+	revwalk_t *this = Z_REVWALK_P(ZEND_THIS);
+	oid_t *oid = Z_OID_P(oid_dp);
+
+	if (GE(git_revwalk_push(O(this), O(oid))))
+		RETURN_THROWS();
+
+	RETURN_NULL();
+}
+
 ZEND_METHOD(git_Revwalk, push_range) {
 	zend_string *range;
 	ZEND_PARSE_PARAMETERS_START(1, 1)

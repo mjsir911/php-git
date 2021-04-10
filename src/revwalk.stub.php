@@ -4,6 +4,7 @@ namespace git {
 	class Revwalk implements Iterator {
 		public function __construct(Repository $repo) {}
 
+		public function push(Oid $id): void {}
 		public function push_range(string $range): void {}
 		public function push_head(): void {}
 		public function push_ref(string $ref): void {}
