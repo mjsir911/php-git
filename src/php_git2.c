@@ -29,9 +29,7 @@ static zend_function_entry php_git2_functions[] = {
 	name##_object_handlers.offset = XtOffsetOf(name##_t, std);
 PHP_MINIT_FUNCTION(git2) {
 	git_libgit2_init();
-	#define REGISTER_RESOURCE(le_res_id, free_func, name) le_res_id = zend_register_list_destructors_ex(free_func,   NULL, name,   module_number);
 	#include "types.h"
-	#undef REGISTER_RESOURCE
 	#undef X
 	#define XI(name, super) zend_class_implements(name##_class_entry, 1, super);
 	#include "types.h"
