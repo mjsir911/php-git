@@ -11,14 +11,13 @@
 #include "error.h"
 #include "object.h"
 
-ZEND_METHOD(git_Repository, lookup_tag) {
-	zval *id_dp;
-	ZEND_PARSE_PARAMETERS_START(1, 1)
-		Z_PARAM_OBJECT_OF_CLASS(id_dp, oid_class_entry)
-	ZEND_PARSE_PARAMETERS_END();
+ZEND_METHOD(git_Tag, lookup) {
+	zval *id_dp, *repo_dp;
+	if (zend_parse_method_parameters(ZEND_NUM_ARGS(), getThis(), "OO", &repo_dp, repository_class_entry, &id_dp, oid_class_entry) == FAILURE)
+		RETURN_THROWS();
 
 	oid_t *id = Z_OID_P(id_dp);
-	repository_t *repo = Z_REPOSITORY_P(ZEND_THIS);
+	repository_t *repo = Z_REPOSITORY_P(repo_dp);
 
 	object_init_ex(return_value, tag_class_entry);
 	tag_t *out = Z_TAG_P(return_value);
@@ -28,15 +27,13 @@ ZEND_METHOD(git_Repository, lookup_tag) {
 		RETURN_NULL();
 }
 
-ZEND_METHOD(git_Repository, tags) {
+ZEND_METHOD(git_Tag, list) {
+	zval *repo_dp;
 	zend_string *pattern = NULL;
+	if (zend_parse_method_parameters(ZEND_NUM_ARGS(), getThis(), "O|S", &repo_dp, repository_class_entry, &pattern) == FAILURE)
+		RETURN_THROWS();
 
-	ZEND_PARSE_PARAMETERS_START(0, 1)
-		Z_PARAM_OPTIONAL
-		Z_PARAM_STR_OR_NULL(pattern)
-	ZEND_PARSE_PARAMETERS_END();
-
-	repository_t *repo = Z_REPOSITORY_P(ZEND_THIS);
+	repository_t *repo = Z_REPOSITORY_P(repo_dp);
 
 	git_strarray tags;
 	if (pattern)

@@ -9,10 +9,8 @@
 ZEND_FUNCTION(git_revparse_ext) {
 	zval *repo_dp;
 	zend_string *spec;
-	ZEND_PARSE_PARAMETERS_START(2, 2)
-		Z_PARAM_OBJECT_OF_CLASS(repo_dp, repository_class_entry)
-		Z_PARAM_STR(spec)
-	ZEND_PARSE_PARAMETERS_END();
+	if (zend_parse_method_parameters(ZEND_NUM_ARGS(), getThis(), "OS", &repo_dp, repository_class_entry, &spec) == FAILURE)
+		RETURN_THROWS();
 
 	repository_t *repo = Z_REPOSITORY_P(repo_dp);
 
@@ -34,10 +32,8 @@ ZEND_FUNCTION(git_revparse_ext) {
 ZEND_FUNCTION(git_revparse_single) {
 	zval *repo_dp;
 	zend_string *spec;
-	ZEND_PARSE_PARAMETERS_START(2, 2)
-		Z_PARAM_OBJECT_OF_CLASS(repo_dp, repository_class_entry)
-		Z_PARAM_STR(spec)
-	ZEND_PARSE_PARAMETERS_END();
+	if (zend_parse_method_parameters(ZEND_NUM_ARGS(), getThis(), "OS", &repo_dp, repository_class_entry, &spec) == FAILURE)
+		RETURN_THROWS();
 
 	repository_t *repo = Z_REPOSITORY_P(repo_dp);
 

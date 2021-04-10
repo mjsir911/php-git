@@ -5,6 +5,7 @@ X(repository, Repository)
 #define PHP_GIT2_REPOSITORY
 #include <php.h>
 #include <git2/repository.h>
+#include "revparse.h"
 
 #include "repository_arginfo.h"
 
