@@ -20,7 +20,7 @@ ZEND_FUNCTION(git_revparse_ext) {
 	git_object *trash;
 	switch (GE(git_revparse_ext(&trash, &O(ref), O(repo), ZSTR_VAL(spec)))) {
 		case 0:
-			return; // return_value
+			RETURN_OBJ(&ref->std);
 		case GIT_ENOTFOUND:
 			RETURN_NULL();
 		default:
