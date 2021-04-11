@@ -34,4 +34,5 @@ TreeEntry Object
     [id] => 64ebe54d
     [filemode] => 33188
     [name] => c.txt
+    [type] => Blob
 )

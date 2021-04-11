@@ -23,6 +23,7 @@ TreeEntry Object
     [id] => 3dabcd1d
     [filemode] => 16384
     [name] => src
+    [type] => Tree
 )
 Tree Object
 (

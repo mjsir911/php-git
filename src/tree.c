@@ -49,7 +49,7 @@ ZEND_METHOD(git_TreeEntry, __debugInfo) {
 
 	zval len;
 	ZVAL_LONG(&len, 8);
-	zval filemode, id, name; 
+	zval filemode, id, name, type;
 	array_init(return_value);
 	zend_call_method_with_0_params(Z_OBJ_P(ZEND_THIS), Z_OBJCE_P(ZEND_THIS), NULL, "id", &id);
 	zend_call_method_with_1_params(Z_OBJ(id), Z_OBJCE(id), NULL, "__toString", &id, &len);
@@ -58,6 +58,8 @@ ZEND_METHOD(git_TreeEntry, __debugInfo) {
 	add_assoc_zval(return_value, "filemode", &filemode);
 	zend_call_method_with_0_params(Z_OBJ_P(ZEND_THIS), Z_OBJCE_P(ZEND_THIS), NULL, "name", &name);
 	add_assoc_zval(return_value, "name", &name);
+	zend_call_method_with_0_params(Z_OBJ_P(ZEND_THIS), Z_OBJCE_P(ZEND_THIS), NULL, "type", &type);
+	add_assoc_zval(return_value, "type", &type);
 
 	RETURN_ARR(Z_ARR_P(return_value));
 }
