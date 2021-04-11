@@ -189,15 +189,20 @@ ZEND_METHOD(git_Tree, current) {
 	ZEND_PARSE_PARAMETERS_NONE();
 
 	tree_t *this = Z_TREE_P(ZEND_THIS);
-	zend_call_method_with_1_params(Z_OBJ_P(ZEND_THIS), Z_OBJCE_P(ZEND_THIS), NULL, "byindex", return_value, &this->current);
+	zval current;
+	ZVAL_LONG(&current, this->current);
+	zend_call_method_with_1_params(Z_OBJ_P(ZEND_THIS), Z_OBJCE_P(ZEND_THIS), NULL, "byindex", return_value, &current);
 }
 
 ZEND_METHOD(git_Tree, key) {
 	ZEND_PARSE_PARAMETERS_NONE();
 
 	tree_t *this = Z_TREE_P(ZEND_THIS);
+	zval current;
+	ZVAL_LONG(&current, this->current);
+
 	zval tree_entry;
-	zend_call_method_with_1_params(Z_OBJ_P(ZEND_THIS), Z_OBJCE_P(ZEND_THIS), NULL, "byindex", &tree_entry, &this->current);
+	zend_call_method_with_1_params(Z_OBJ_P(ZEND_THIS), Z_OBJCE_P(ZEND_THIS), NULL, "byindex", &tree_entry, &current);
 	zend_call_method_with_0_params(Z_OBJ(tree_entry), Z_OBJCE(tree_entry), NULL, "name", return_value);
 	RETURN_OBJ(Z_OBJ_P(return_value));
 }
@@ -205,14 +210,14 @@ ZEND_METHOD(git_Tree, next) {
 	ZEND_PARSE_PARAMETERS_NONE();
 
 	tree_t *this = Z_TREE_P(ZEND_THIS);
-	Z_LVAL(this->current)++;
+	this->current++;
 	RETURN_NULL();
 }
 ZEND_METHOD(git_Tree, rewind) {
 	ZEND_PARSE_PARAMETERS_NONE();
 
 	tree_t *this = Z_TREE_P(ZEND_THIS);
-	Z_LVAL(this->current) = 0;
+	this->current = 0;
 	RETURN_NULL();
 }
 ZEND_METHOD(git_Tree, valid) {
@@ -221,7 +226,7 @@ ZEND_METHOD(git_Tree, valid) {
 	tree_t *this = Z_TREE_P(ZEND_THIS);
 	zval count;
 	zend_call_method_with_0_params(Z_OBJ_P(ZEND_THIS), Z_OBJCE_P(ZEND_THIS), NULL, "count", &count);
-	RETURN_BOOL(Z_LVAL(this->current) < Z_LVAL(count));
+	RETURN_BOOL(this->current < Z_LVAL(count));
 }
 
 ZEND_METHOD(git_Tree, __debugInfo) {

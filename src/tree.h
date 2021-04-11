@@ -16,7 +16,7 @@ XI(tree, zend_ce_arrayaccess);
 #include "tree_arginfo.h"
 
 #define T tree
-#define E zval current;
+#define E size_t current;
 #include "gitobj.h"
 
 #define Z_TREE_P(zv) php_git2_tree_from_obj(Z_OBJ_P((zv)))
