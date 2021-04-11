@@ -1,5 +1,6 @@
 #include <php.h>
 #include <git2/oid.h>
+#include <zend_interfaces.h>
 #include "oid.h"
 #include "error.h"
 
@@ -43,4 +44,17 @@ PHP_METHOD(git_Oid, __toString) {
 	char buf[len];
 	git_oid_tostr(buf, len, O(this));
 	RETURN_STRING(buf);
+}
+
+ZEND_METHOD(git_Oid, __debugInfo) {
+	ZEND_PARSE_PARAMETERS_NONE();
+
+	zval len, sha;
+	ZVAL_LONG(&len, 8);
+
+	array_init(return_value);
+	zend_call_method_with_1_params(Z_OBJ_P(ZEND_THIS), Z_OBJCE_P(ZEND_THIS), NULL, "__toString", &sha, &len);
+	add_assoc_zval(return_value, "sha", &sha);
+
+	RETURN_ARR(Z_ARR_P(return_value));
 }
