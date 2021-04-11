@@ -37,7 +37,7 @@ ZEND_METHOD(git_Commit, message_encoding) {
 	commit_t *commit = Z_COMMIT_P(ZEND_THIS);
 
 	const char *msg_encoding;
-	if (!(msg_encoding = git_commit_message_encoding(O(commit))))
+	if (GE(!(msg_encoding = git_commit_message_encoding(O(commit)))))
 		RETURN_STRING("UTF-8");
 	char buf[strlen(msg_encoding) + 1];
 	strcpy(buf, msg_encoding);
@@ -50,7 +50,7 @@ ZEND_METHOD(git_Commit, message) {
 	commit_t *commit = Z_COMMIT_P(ZEND_THIS);
 
 	const char *commit_msg;
-	if (!(commit_msg = git_commit_message(O(commit))))
+	if (GE(!(commit_msg = git_commit_message(O(commit)))))
 		RETURN_THROWS();
 
 	char buf[strlen(commit_msg) + 1];
@@ -64,7 +64,7 @@ ZEND_METHOD(git_Commit, summary) {
 	commit_t *commit = Z_COMMIT_P(ZEND_THIS);
 
 	const char *commit_summary;
-	if (!(commit_summary = git_commit_summary(O(commit))))
+	if (GE(!(commit_summary = git_commit_summary(O(commit)))))
 		RETURN_THROWS();
 
 	char buf[strlen(commit_summary) + 1];
@@ -81,7 +81,7 @@ ZEND_METHOD(git_Commit, committer) {
 		php_git2_signature_new(signature_class_entry)
 	);
 
-	if (git_signature_dup(&O(sig), git_commit_committer(O(commit))))
+	if (GE(git_signature_dup(&O(sig), git_commit_committer(O(commit)))))
 		RETURN_THROWS();
 
 	RETURN_OBJ(&sig->std);
@@ -96,7 +96,7 @@ ZEND_METHOD(git_Commit, author) {
 		php_git2_signature_new(signature_class_entry)
 	);
 
-	if (git_signature_dup(&O(sig), git_commit_author(O(commit))))
+	if (GE(git_signature_dup(&O(sig), git_commit_author(O(commit)))))
 		RETURN_THROWS();
 
 	RETURN_OBJ(&sig->std);
