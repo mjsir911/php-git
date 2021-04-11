@@ -1,7 +1,7 @@
 #ifdef X
 X(commit, Commit)
 #elif defined XO
-XO(commit, COMMIT)
+XO(commit, COMMIT, Commit)
 #else
 #ifndef PHP_GIT2_COMMIT
 #define PHP_GIT2_COMMIT

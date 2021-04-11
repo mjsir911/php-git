@@ -1,7 +1,7 @@
 #ifdef X
 X(tag, Tag)
 #elif defined XO
-XO(tag, TAG)
+XO(tag, TAG, Tag)
 #else
 #ifndef PHP_GIT2_TAG
 #define PHP_GIT2_TAG

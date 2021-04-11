@@ -27,6 +27,11 @@ ZEND_METHOD(git_TreeEntry, name) {
 	tree_entry_t *this = Z_TREE_ENTRY_P(ZEND_THIS);
 	RETURN_STRING(git_tree_entry_name(O(this)));
 }
+ZEND_METHOD(git_TreeEntry, type) {
+	ZEND_PARSE_PARAMETERS_NONE();
+	tree_entry_t *this = Z_TREE_ENTRY_P(ZEND_THIS);
+	RETURN_STRING(php_git2_object_dispatch_typename(git_tree_entry_type(O(this))));
+}
 ZEND_METHOD(git_TreeEntry, to_object) {
 	zval *repo_dp;
 	ZEND_PARSE_PARAMETERS_START(1, 1)

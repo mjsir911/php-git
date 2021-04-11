@@ -5,6 +5,7 @@ namespace git {
 		public function filemode(): int {}
 		public function id(): Oid {}
 		public function name(): string {}
+		public function type(): string {}
 		public function to_object(Repository $repo): object {}
 
 		public function __debugInfo(): array {}

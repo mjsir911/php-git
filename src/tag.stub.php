@@ -8,6 +8,7 @@ namespace git {
 		// can't implement foreach here cuz its a keyword :P
 
 		public function target_id(): Oid {}
+		public function target_type(): string {}
 		public function id(): Oid {}
 		// public function target_type(): mixed {}
 		public function name(): string {}

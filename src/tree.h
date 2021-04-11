@@ -2,7 +2,7 @@
 X(tree, Tree)
 X(tree_entry, TreeEntry)
 #elif defined XO
-XO(tree, TREE)
+XO(tree, TREE, Tree)
 #elif defined XI
 XI(tree, zend_ce_countable);
 XI(tree, zend_ce_iterator);

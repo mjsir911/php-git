@@ -70,6 +70,11 @@ ZEND_METHOD(git_Tag, target_id) {
 	oid_t *oid = Z_OID_P(return_value);
 	memcpy(O(oid), git_tag_target_id(O(tag)), sizeof(*O(oid)));
 }
+ZEND_METHOD(git_Tag, target_type) {
+	ZEND_PARSE_PARAMETERS_NONE();
+	tag_t *this = Z_TAG_P(ZEND_THIS);
+	RETURN_STRING(php_git2_object_dispatch_typename(git_tag_target_type(O(this))));
+}
 
 ZEND_METHOD(git_Tag, id) {
 	ZEND_PARSE_PARAMETERS_NONE();
