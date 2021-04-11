@@ -9,3 +9,4 @@
 #include "tag.h"
 #include "revparse.h"
 #include "tree.h"
+#include "blob.h"
