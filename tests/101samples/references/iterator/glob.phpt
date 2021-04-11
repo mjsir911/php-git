@@ -15,6 +15,6 @@ foreach ($repo->references("refs/heads/*") as $ref) {
 }
 ?>
 --EXPECT--
-refs/heads/master 64806db6
+refs/heads/master 41756be7
 refs/heads/msirabella/fix/importable 2596aeb1
 refs/heads/msirabella/foobar 25d231de

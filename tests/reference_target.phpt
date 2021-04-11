@@ -16,4 +16,4 @@ $oid = $ref->target();
 echo $oid->__toString(8), PHP_EOL;
 ?>
 --EXPECT--
-64806db6
+41756be7

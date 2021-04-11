@@ -15,4 +15,4 @@ $oid = Reference::name_to_id($repo, "HEAD");
 echo $oid->__toString(8);
 ?>
 --EXPECTF--
-64806db6
+41756be7
