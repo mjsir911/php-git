@@ -10,6 +10,7 @@ namespace git {
 		public function target_id(): Oid {}
 		public function target_type(): string {}
 		public function id(): Oid {}
+		public function short_id(): string {}
 		// public function target_type(): mixed {}
 		public function name(): string {}
 		public function tagger(): Signature {}

@@ -4,10 +4,10 @@ PHP_ARG_ENABLE(git2, Whether to enable the "git2" extension,
 if test $PHP_GIT2 != "no"; then
 	PHP_SUBST(GIT2_SHARED_LIBADD)
 
-	PHP_ADD_SOURCES(src, repository_arginfo.h clone_arginfo.h oid_arginfo.h signature_arginfo.h commit_arginfo.h tree_arginfo.h revwalk_arginfo.h reference_arginfo.h reference_iterator_arginfo.h tag_arginfo.h revparse_arginfo.h blob_arginfo.h)
-	PHP_ADD_SOURCES_X(src, repository.c clone.c oid.c signature.c commit.c tree.c revwalk.c reference.c reference_iterator.c tag.c revparse.c blob.c,$ac_extra,shared_objects_git2,yes)
+	PHP_ADD_SOURCES(src, repository_arginfo.h clone_arginfo.h oid_arginfo.h signature_arginfo.h commit_arginfo.h tree_arginfo.h revwalk_arginfo.h reference_arginfo.h reference_iterator_arginfo.h tag_arginfo.h revparse_arginfo.h blob_arginfo.h object_arginfo.h)
+	PHP_ADD_SOURCES_X(src, repository.c clone.c oid.c signature.c commit.c tree.c revwalk.c reference.c reference_iterator.c tag.c revparse.c blob.c object.c,$ac_extra,shared_objects_git2,yes)
 
-	PHP_ADD_SOURCES_X(src, error.c object.c php_git2.c,$ac_extra,shared_objects_git2,yes)
+	PHP_ADD_SOURCES_X(src, error.c php_git2.c,$ac_extra,shared_objects_git2,yes)
 
 	PHP_NEW_EXTENSION(git2,,$ext_shared)
 

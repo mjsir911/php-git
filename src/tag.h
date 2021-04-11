@@ -2,6 +2,8 @@
 X(tag, Tag)
 #elif defined XO
 XO(tag, TAG, Tag)
+#elif defined XI
+XI(tag, object_class_entry)
 #else
 #ifndef PHP_GIT2_TAG
 #define PHP_GIT2_TAG

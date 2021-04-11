@@ -19,7 +19,8 @@ ZEND_METHOD(git_Tag, lookup) {
 	oid_t *id = Z_OID_P(id_dp);
 	repository_t *repo = Z_REPOSITORY_P(repo_dp);
 
-	object_init_ex(return_value, tag_class_entry);
+	if (object_init_ex(return_value, tag_class_entry))
+		RETURN_THROWS();
 	tag_t *out = Z_TAG_P(return_value);
 	if (GE(git_tag_lookup(&O(out), O(repo), O(id))))
 		RETURN_THROWS();
@@ -115,6 +116,7 @@ ZEND_METHOD(git_Tag, __debugInfo) {
 
 	zend_call_method_with_0_params(Z_OBJ_P(ZEND_THIS), Z_OBJCE_P(ZEND_THIS), NULL, "id", &id);
 	zend_call_method_with_0_params(Z_OBJ(id), Z_OBJCE(id), NULL, "__toString", &id);
+
 	add_assoc_zval(return_value, "id", &id);
 	zend_call_method_with_0_params(Z_OBJ_P(ZEND_THIS), Z_OBJCE_P(ZEND_THIS), NULL, "name", &name);
 	add_assoc_zval(return_value, "name", &name);
