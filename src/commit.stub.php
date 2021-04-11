@@ -15,6 +15,7 @@ namespace git {
 		public function author(): Signature {}
 		// public function raw_header(mixed $commit): string {}
 		public function tree_id(): Oid {}
+		public function tree(): Tree {}
 	}
 }
 ?>

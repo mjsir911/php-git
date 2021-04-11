@@ -8,3 +8,4 @@
 #include "reference_iterator.h"
 #include "tag.h"
 #include "revparse.h"
+#include "tree.h"
