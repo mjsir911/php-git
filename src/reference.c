@@ -86,3 +86,10 @@ ZEND_METHOD(git_Reference, name) {
 
 	RETURN_STRING(git_reference_name(O(ref)));
 }
+ZEND_METHOD(git_Reference, shorthand) {
+	ZEND_PARSE_PARAMETERS_NONE();
+
+	reference_t *ref = Z_REFERENCE_P(ZEND_THIS);
+
+	RETURN_STRING(git_reference_shorthand(O(ref)));
+}

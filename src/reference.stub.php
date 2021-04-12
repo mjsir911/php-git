@@ -8,6 +8,7 @@ namespace git {
 
 		public function target(): Oid {}
 		public function name(): string {}
+		public function shorthand(): string {}
 	}
 }
 ?>
