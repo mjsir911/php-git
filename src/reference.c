@@ -3,6 +3,7 @@
 #include "reference.h"
 #include "oid.h"
 #include "repository.h"
+#include "object.h"
 #include "error.h"
 
 ZEND_METHOD(git_Reference, dwim) {
@@ -77,6 +78,17 @@ ZEND_METHOD(git_Reference, target) {
 		RETURN_NULL();
 
 	memcpy(O(oid), tmpoid, sizeof(*O(oid)));
+}
+
+ZEND_METHOD(git_Reference, peel) {
+	ZEND_PARSE_PARAMETERS_NONE();
+
+	reference_t *this = Z_REFERENCE_P(ZEND_THIS);
+
+	git_object *obj;
+	git_reference_peel(&obj, O(this), GIT_OBJECT_ANY);
+	object_init_ex(return_value, oid_class_entry);
+	RETURN_OBJ(php_git2_object_dispatch_new(obj));
 }
 
 ZEND_METHOD(git_Reference, name) {

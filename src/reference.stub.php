@@ -7,6 +7,7 @@ namespace git {
 		public static function name_to_id(Repository $repo, string $name): Oid {}
 
 		public function target(): Oid {}
+		public function peel(): object {}
 		public function name(): string {}
 		public function shorthand(): string {}
 	}
