@@ -111,3 +111,19 @@ ZEND_METHOD(git_Commit, tree_id) {
 	oid_t *oid = Z_OID_P(return_value);
 	memcpy(O(oid), git_commit_tree_id(O(commit)), sizeof(*O(oid)));
 }
+
+ZEND_METHOD(git_Commit, parents) {
+	ZEND_PARSE_PARAMETERS_NONE();
+
+	commit_t *commit = Z_COMMIT_P(ZEND_THIS);
+
+	array_init(return_value);
+
+	for (int i=0; i < git_commit_parentcount(O(commit)); i++) {
+		zval zparent;
+		object_init_ex(&zparent, commit_class_entry);
+		commit_t *parent = Z_COMMIT_P(&zparent);
+		git_commit_parent(&O(parent), O(commit), i);
+		add_next_index_zval(return_value, &zparent);
+	}
+}

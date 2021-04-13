@@ -16,6 +16,8 @@ namespace git {
 		// public function raw_header(mixed $commit): string {}
 		public function tree_id(): Oid {}
 		public function tree(): Tree {}
+
+		public function parents(): array {}
 	}
 }
 ?>
