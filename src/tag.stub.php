@@ -5,7 +5,7 @@ namespace git {
 		// protected function __construct(Repository $repo, Oid $oid) {}
 		static public function list(Repository $repo, ?string $pattern): array {}
 		static public function lookup(Repository $repo, Oid $oid): ?Tag {}
-		// can't implement foreach here cuz its a keyword :P
+		static public function foreach(callable $callback): void {}
 
 		public function target_id(): Oid {}
 		public function target_type(): string {}

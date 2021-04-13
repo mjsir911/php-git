@@ -18,7 +18,7 @@ namespace git {
 		public function tags(?string $pattern): array {}
 		/** @alias git_Tag::lookup */
 		public function lookup_tag(Oid $oid): ?Tag {}
-		// /** @alias git_Tag::foreach */
+		/** @alias git_Tag::foreach */
 		public function foreach_tag(callable $callback): void {}
 
 		// /** @alias git_Commit::__construct */

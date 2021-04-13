@@ -147,14 +147,14 @@ int php_git2_tag_foreach_cb(const char *name, git_oid *oid, void *payload) {
 	return 0;
 }
 
-ZEND_METHOD(git_Repository, foreach_tag) {
+ZEND_METHOD(git_Tag, foreach) {
+	zval *repo_dp;
 	struct php_git2_fcall fc;
 
-	ZEND_PARSE_PARAMETERS_START(1, 1)
-		Z_PARAM_FUNC(fc.i, fc.c)
-	ZEND_PARSE_PARAMETERS_END();
+	if (zend_parse_method_parameters(ZEND_NUM_ARGS(), getThis(), "Of", &repo_dp, repository_class_entry, &fc.i, &fc.c) == FAILURE)
+		RETURN_THROWS();
 
-	repository_t *repo = Z_REPOSITORY_P(ZEND_THIS);
+	repository_t *repo = Z_REPOSITORY_P(repo_dp);
 	fc.repo = repo;
 
 	git_tag_foreach(O(repo), php_git2_tag_foreach_cb, &fc);
