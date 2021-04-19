@@ -9,7 +9,7 @@
 #include "oid.h"
 #include "repository.h"
 #include "error.h"
-#include "object.h"
+#include "object_helpers.h"
 
 ZEND_METHOD(git_Tag, lookup) {
 	zval *id_dp, *repo_dp;

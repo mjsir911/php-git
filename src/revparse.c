@@ -1,7 +1,7 @@
 #include <zend_API.h>
 #include <git2/revparse.h>
 #include <git2/errors.h>
-#include "object.h"
+#include "object_helpers.h"
 #include "reference.h"
 #include "repository.h"
 #include "error.h"

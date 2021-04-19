@@ -3,7 +3,7 @@
 #include "reference.h"
 #include "oid.h"
 #include "repository.h"
-#include "object.h"
+#include "object_helpers.h"
 #include "error.h"
 
 ZEND_METHOD(git_Reference, dwim) {

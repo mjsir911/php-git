@@ -5,7 +5,7 @@
 #include "repository.h"
 #include "oid.h"
 #include "commit.h"
-#include "object.h"
+#include "object_helpers.h"
 #include "error.h"
 
 ZEND_METHOD(git_TreeEntry, filemode) {
