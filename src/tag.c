@@ -114,8 +114,7 @@ ZEND_METHOD(git_Tag, __debugInfo) {
 	zval id, name, tagger, message; 
 	array_init(return_value);
 
-	zend_call_method_with_0_params(Z_OBJ_P(ZEND_THIS), Z_OBJCE_P(ZEND_THIS), NULL, "id", &id);
-	zend_call_method_with_0_params(Z_OBJ(id), Z_OBJCE(id), NULL, "__toString", &id);
+	zend_call_method_with_0_params(Z_OBJ_P(ZEND_THIS), Z_OBJCE_P(ZEND_THIS), NULL, "short_id", &id);
 
 	add_assoc_zval(return_value, "id", &id);
 	zend_call_method_with_0_params(Z_OBJ_P(ZEND_THIS), Z_OBJCE_P(ZEND_THIS), NULL, "name", &name);

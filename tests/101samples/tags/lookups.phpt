@@ -18,7 +18,7 @@ print_r($tag);
 --EXPECTF--
 Tag Object
 (
-    [id] => 0bc92598491cfa2e53a170130f81f33b5479d6af
+    [id] => 0bc9259
     [name] => neg_1
     [tagger] => Signature Object
         (

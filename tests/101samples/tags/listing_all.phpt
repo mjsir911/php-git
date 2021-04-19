@@ -17,7 +17,7 @@ Array
 (
     [neg_1] => Tag Object
         (
-            [id] => 0bc92598491cfa2e53a170130f81f33b5479d6af
+            [id] => 0bc9259
             [name] => neg_1
             [tagger] => Signature Object
                 (
@@ -33,7 +33,7 @@ Array
 
     [v0.0] => Tag Object
         (
-            [id] => 27a4130713568080615800200f02365b904e797d
+            [id] => 27a4130
             [name] => 0.0
             [tagger] => Signature Object
                 (
