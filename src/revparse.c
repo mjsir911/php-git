@@ -3,6 +3,7 @@
 #include <git2/errors.h>
 #include "object_helpers.h"
 #include "reference.h"
+#include "commit.h"
 #include "repository.h"
 #include "error.h"
 
@@ -14,15 +15,23 @@ ZEND_FUNCTION(git_revparse_ext) {
 
 	repository_t *repo = Z_REPOSITORY_P(repo_dp);
 
-	object_init_ex(return_value, reference_class_entry);
-	reference_t *ref = Z_REFERENCE_P(return_value);
+	zval commit_dp, ref_dp;
+	object_init_ex(&commit_dp, commit_class_entry);
+	object_init_ex(&ref_dp, reference_class_entry);
+	reference_t *ref = Z_REFERENCE_P(&ref_dp);
+	commit_t *commit = Z_COMMIT_P(&commit_dp);
 
-	git_object *trash;
-	switch (GE(git_revparse_ext(&trash, &O(ref), O(repo), ZSTR_VAL(spec)))) {
-		case 0:
-			RETURN_OBJ(&ref->std);
+	array_init(return_value);
+	switch (GE(git_revparse_ext((git_object **)&O(commit), &O(ref), O(repo), ZSTR_VAL(spec)))) {
 		case GIT_ENOTFOUND:
-			RETURN_NULL();
+			ZVAL_NULL(&commit_dp);
+			ZVAL_NULL(&ref_dp);
+		case 0:
+			if (!O(ref))
+				ZVAL_NULL(&ref_dp);
+			add_next_index_zval(return_value, &commit_dp);
+			add_next_index_zval(return_value, &ref_dp);
+			RETURN_ARR(Z_ARR_P(return_value));
 		default:
 			RETURN_THROWS();
 	}
