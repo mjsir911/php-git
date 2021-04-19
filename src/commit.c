@@ -1,5 +1,6 @@
 #include <php.h>
 #include <git2/commit.h>
+#include <zend_interfaces.h>
 #include "commit.h"
 #include "oid.h"
 #include "repository.h"
@@ -126,4 +127,11 @@ ZEND_METHOD(git_Commit, parents) {
 		git_commit_parent(&O(parent), O(commit), i);
 		add_next_index_zval(return_value, &zparent);
 	}
+}
+
+ZEND_METHOD(git_Commit, __toString) {
+	ZEND_PARSE_PARAMETERS_NONE();
+
+	zend_call_method_with_0_params(Z_OBJ_P(ZEND_THIS), Z_OBJCE_P(ZEND_THIS), NULL, "id", return_value);
+	zend_call_method_with_0_params(Z_OBJ_P(return_value), Z_OBJCE_P(return_value), NULL, "__toString", return_value);
 }

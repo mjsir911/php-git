@@ -18,6 +18,12 @@ namespace git {
 		public function tree(): Tree {}
 
 		public function parents(): array {}
+
+		public function short_id(): string {}
+		/** @alias git\Commit::short_id */
+		public function shorthand(): string {} // for polymorphism with Reference
+
+		public function __toString(): Oid {}
 	}
 }
 ?>

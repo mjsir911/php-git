@@ -10,6 +10,9 @@ namespace git {
 		public function peel(): object {}
 		public function name(): string {}
 		public function shorthand(): string {}
+
+		/** @alias git\Reference::shorthand */
+		public function __toString(): string {} // for polymorphism with Commit
 	}
 }
 ?>
