@@ -16,6 +16,6 @@ php.buildPecl {
 		ln -s $phpParser build/PHP-Parser-4.9.0
 	'';
 
-	nativeBuildInputs = [ (php.withExtensions ({all, ...}: with all; [tokenizer])) ];
-	buildInputs = [ pkg-config libgit2 ];
+	nativeBuildInputs = [ pkg-config (php.withExtensions ({all, ...}: with all; [tokenizer])) ];
+	buildInputs = [ libgit2 ];
 }
