@@ -11,7 +11,7 @@ if test $PHP_GIT2 != "no"; then
 
 	PHP_NEW_EXTENSION(git2,,$ext_shared)
 
-	PKG_CHECK_MODULES([LIBGIT2], [libgit2 >= 1.1.0])
+	PKG_CHECK_MODULES([LIBGIT2], [libgit2 >= 1.0.0])
 
 	PHP_EVAL_INCLINE($LIBGIT2_CFLAGS)
 	PHP_EVAL_LIBLINE($LIBGIT2_LIBS)
