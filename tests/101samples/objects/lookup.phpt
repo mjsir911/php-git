@@ -26,6 +26,13 @@ Commit Object
 This is for testing out git-php
 
     [summary] => Add code to run (and a subdirectory)
+    [time] => DateTime Object
+        (
+            [date] => 2021-04-02 17:28:23.000000
+            [timezone_type] => 1
+            [timezone] => -07:00
+        )
+
     [committer] => Signature Object
         (
             [name] => Marco Sirabella

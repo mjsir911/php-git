@@ -42,6 +42,13 @@ version releases?
 from git-tag(1), but what are lightweight tags for? "are meant for
 private or temporary object labels"? ok
 
+            [time] => DateTime Object
+                (
+                    [date] => 2021-04-07 08:37:26.000000
+                    [timezone_type] => 1
+                    [timezone] => -07:00
+                )
+
         )
 
 )

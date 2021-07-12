@@ -108,14 +108,20 @@ ZEND_METHOD(git_Tag, message) {
 	RETURN_STRING(message);
 }
 
+ZEND_METHOD(git_Tag, time) {
+	ZEND_PARSE_PARAMETERS_NONE();
+
+	zend_call_method_with_0_params(Z_OBJ_P(ZEND_THIS), Z_OBJCE_P(ZEND_THIS), NULL, "tagger", return_value);
+	zend_call_method_with_0_params(Z_OBJ_P(return_value), Z_OBJCE_P(return_value), NULL, "when", return_value);
+}
+
 ZEND_METHOD(git_Tag, __debugInfo) {
 	ZEND_PARSE_PARAMETERS_NONE();
 
-	zval id, name, tagger, message; 
+	zval id, name, tagger, message, time;
 	array_init(return_value);
 
 	zend_call_method_with_0_params(Z_OBJ_P(ZEND_THIS), Z_OBJCE_P(ZEND_THIS), NULL, "short_id", &id);
-
 	add_assoc_zval(return_value, "id", &id);
 	zend_call_method_with_0_params(Z_OBJ_P(ZEND_THIS), Z_OBJCE_P(ZEND_THIS), NULL, "name", &name);
 	add_assoc_zval(return_value, "name", &name);
@@ -123,6 +129,8 @@ ZEND_METHOD(git_Tag, __debugInfo) {
 	add_assoc_zval(return_value, "tagger", &tagger);
 	zend_call_method_with_0_params(Z_OBJ_P(ZEND_THIS), Z_OBJCE_P(ZEND_THIS), NULL, "message", &message);
 	add_assoc_zval(return_value, "message", &message);
+	zend_call_method_with_0_params(Z_OBJ_P(ZEND_THIS), Z_OBJCE_P(ZEND_THIS), NULL, "time", &time);
+	add_assoc_zval(return_value, "time", &time);
 }
 
 struct php_git2_fcall {

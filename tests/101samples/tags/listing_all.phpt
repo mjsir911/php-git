@@ -34,6 +34,13 @@ Array
 
             [message] => What happens when I have two tags on a commit?
 
+            [time] => DateTime Object
+                (
+                    [date] => 2021-04-07 08:51:04.000000
+                    [timezone_type] => 1
+                    [timezone] => -07:00
+                )
+
         )
 
     [tests-depend-on-this-being-head] => Commit Object
@@ -45,6 +52,13 @@ Array
 To be clear, this license file only applies to the test repository
 
             [summary] => Add a license file
+            [time] => DateTime Object
+                (
+                    [date] => 2021-04-03 00:58:33.000000
+                    [timezone_type] => 1
+                    [timezone] => -07:00
+                )
+
             [committer] => Signature Object
                 (
                     [name] => Marco Sirabella
@@ -99,6 +113,13 @@ version releases?
 
 from git-tag(1), but what are lightweight tags for? "are meant for
 private or temporary object labels"? ok
+
+            [time] => DateTime Object
+                (
+                    [date] => 2021-04-07 08:37:26.000000
+                    [timezone_type] => 1
+                    [timezone] => -07:00
+                )
 
         )
 

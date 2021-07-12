@@ -22,6 +22,13 @@ Commit Object
     [message] => Initial commit - add readme
 
     [summary] => Initial commit - add readme
+    [time] => DateTime Object
+        (
+            [date] => 2021-04-02 17:26:16.000000
+            [timezone_type] => 1
+            [timezone] => -07:00
+        )
+
     [committer] => Signature Object
         (
             [name] => Marco Sirabella

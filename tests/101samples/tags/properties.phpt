@@ -18,6 +18,7 @@ echo $tag->target_id(), PHP_EOL;
 echo $tag->target_type(), PHP_EOL;
 echo $tag->name(), PHP_EOL;
 print_r($tag->tagger());
+print_r($tag->time());
 echo $tag->message(), PHP_EOL;
 ?>
 --EXPECT--
@@ -35,6 +36,12 @@ Signature Object
             [timezone] => -07:00
         )
 
+)
+DateTime Object
+(
+    [date] => 2021-04-07 08:37:26.000000
+    [timezone_type] => 1
+    [timezone] => -07:00
 )
 This is version 0.0!
 

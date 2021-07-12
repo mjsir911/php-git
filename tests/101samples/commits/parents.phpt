@@ -26,6 +26,13 @@ Array
 To be clear, this license file only applies to the test repository
 
             [summary] => Add a license file
+            [time] => DateTime Object
+                (
+                    [date] => 2021-04-03 00:58:33.000000
+                    [timezone_type] => 1
+                    [timezone] => -07:00
+                )
+
             [committer] => Signature Object
                 (
                     [name] => Marco Sirabella

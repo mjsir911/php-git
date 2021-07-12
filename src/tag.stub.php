@@ -17,6 +17,7 @@ namespace git {
 		// this is for polymorphism with git\Commit
 		/** @implementation-alias git\Tag::tagger */
 		public function author(): Signature {}
+		public function time(): DateTime {}
 		public function message(): string {}
 		public function __debugInfo(): array {}
 	}

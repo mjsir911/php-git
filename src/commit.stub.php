@@ -9,8 +9,7 @@ namespace git {
 		public function message_encoding(): string {}
 		public function message(): string {}
 		public function summary(): string {}
-		// public function time(mixed $commit): mixed {}
-		// public function time_offset(mixed $commit): int {}
+		public function time(): DateTime {}
 		public function committer(): Signature {}
 		public function author(): Signature {}
 		// public function raw_header(mixed $commit): string {}

@@ -129,6 +129,13 @@ ZEND_METHOD(git_Commit, parents) {
 	}
 }
 
+ZEND_METHOD(git_Commit, time) {
+	ZEND_PARSE_PARAMETERS_NONE();
+
+	zend_call_method_with_0_params(Z_OBJ_P(ZEND_THIS), Z_OBJCE_P(ZEND_THIS), NULL, "committer", return_value);
+	zend_call_method_with_0_params(Z_OBJ_P(return_value), Z_OBJCE_P(return_value), NULL, "when", return_value);
+}
+
 ZEND_METHOD(git_Commit, __toString) {
 	ZEND_PARSE_PARAMETERS_NONE();
 
@@ -150,8 +157,8 @@ ZEND_METHOD(git_Commit, __debugInfo) {
 	add_assoc_zval(return_value, "message", &message);
 	zend_call_method_with_0_params(Z_OBJ_P(ZEND_THIS), Z_OBJCE_P(ZEND_THIS), NULL, "summary", &summary);
 	add_assoc_zval(return_value, "summary", &summary);
-	// zend_call_method_with_0_params(Z_OBJ_P(ZEND_THIS), Z_OBJCE_P(ZEND_THIS), NULL, "time", &time);
-	// add_assoc_zval(return_value, "time", &time);
+	zend_call_method_with_0_params(Z_OBJ_P(ZEND_THIS), Z_OBJCE_P(ZEND_THIS), NULL, "time", &time);
+	add_assoc_zval(return_value, "time", &time);
 	zend_call_method_with_0_params(Z_OBJ_P(ZEND_THIS), Z_OBJCE_P(ZEND_THIS), NULL, "committer", &committer);
 	add_assoc_zval(return_value, "committer", &committer);
 	zend_call_method_with_0_params(Z_OBJ_P(ZEND_THIS), Z_OBJCE_P(ZEND_THIS), NULL, "author", &author);
