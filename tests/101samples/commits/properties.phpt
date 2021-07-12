@@ -25,6 +25,7 @@ echo $commit->author()->name(), PHP_EOL;
 echo $commit->author()->email(), PHP_EOL;
 # echo git_commit_raw_header($commit);
 # echo git_commit_tree_id($commit);
+print_r($commit);
 ?>
 --EXPECT--
 faa1fb22
@@ -36,3 +37,23 @@ Marco Sirabella
 marco@sirabella.org
 Marco Sirabella
 marco@sirabella.org
+Commit Object
+(
+    [id] => faa1fb2
+    [encoding] => UTF-8
+    [message] => Initial commit - add readme
+
+    [summary] => Initial commit - add readme
+    [committer] => Signature Object
+        (
+            [name] => Marco Sirabella
+            [email] => marco@sirabella.org
+        )
+
+    [author] => Signature Object
+        (
+            [name] => Marco Sirabella
+            [email] => marco@sirabella.org
+        )
+
+)

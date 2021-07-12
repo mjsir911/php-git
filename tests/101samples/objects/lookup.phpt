@@ -14,8 +14,28 @@ if (!extension_loaded('git2')) {
 $repo = Repository::open_bare("./tests/repo.git");
 
 $oid = new Oid("0a64a3ad3af9c3b185067c47e47d46f4faa3b17d");
-var_dump(new Commit($repo, $oid))
+print_r(new Commit($repo, $oid))
 ?>
 --EXPECTF--
-object(Commit)#%d (0) {
-}
+Commit Object
+(
+    [id] => 0a64a3a
+    [encoding] => UTF-8
+    [message] => Add code to run (and a subdirectory)
+
+This is for testing out git-php
+
+    [summary] => Add code to run (and a subdirectory)
+    [committer] => Signature Object
+        (
+            [name] => Marco Sirabella
+            [email] => marco@sirabella.org
+        )
+
+    [author] => Signature Object
+        (
+            [name] => Marco Sirabella
+            [email] => marco@sirabella.org
+        )
+
+)

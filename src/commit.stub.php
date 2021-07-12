@@ -24,6 +24,7 @@ namespace git {
 		public function shorthand(): string {} // for polymorphism with Reference
 
 		public function __toString(): Oid {}
+		public function __debugInfo(): array {}
 	}
 }
 ?>

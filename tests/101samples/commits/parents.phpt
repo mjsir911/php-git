@@ -19,6 +19,25 @@ Array
 (
     [0] => Commit Object
         (
+            [id] => 64806db
+            [encoding] => UTF-8
+            [message] => Add a license file
+
+To be clear, this license file only applies to the test repository
+
+            [summary] => Add a license file
+            [committer] => Signature Object
+                (
+                    [name] => Marco Sirabella
+                    [email] => marco@sirabella.org
+                )
+
+            [author] => Signature Object
+                (
+                    [name] => Marco Sirabella
+                    [email] => marco@sirabella.org
+                )
+
         )
 
 )

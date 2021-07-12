@@ -12,8 +12,26 @@ $repo = Repository::open_bare("./tests/repo.git");
 $oid = new Oid("faa1fb22c4e0fb79bed3d3b7ea5901b7919fd131");
 
 $commit = new Commit($repo, $oid);
-var_dump($commit)
+print_r($commit)
 ?>
---EXPECTF--
-object(Commit)#%d (0) {
-}
+--EXPECT--
+Commit Object
+(
+    [id] => faa1fb2
+    [encoding] => UTF-8
+    [message] => Initial commit - add readme
+
+    [summary] => Initial commit - add readme
+    [committer] => Signature Object
+        (
+            [name] => Marco Sirabella
+            [email] => marco@sirabella.org
+        )
+
+    [author] => Signature Object
+        (
+            [name] => Marco Sirabella
+            [email] => marco@sirabella.org
+        )
+
+)
