@@ -10,7 +10,7 @@ if (!extension_loaded('git2')) {
 <?php
 $repo = Repository::open_bare("./tests/repo.git");
 
-$repo->foreach_tag(function($obj) use ($repo) {
+$repo->foreach_tag(function($obj) {
 	print_r($obj);
 });
 ?>
