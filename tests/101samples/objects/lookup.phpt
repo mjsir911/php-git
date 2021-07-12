@@ -30,12 +30,26 @@ This is for testing out git-php
         (
             [name] => Marco Sirabella
             [email] => marco@sirabella.org
+            [when] => DateTime Object
+                (
+                    [date] => 2021-04-02 17:28:23.000000
+                    [timezone_type] => 1
+                    [timezone] => -07:00
+                )
+
         )
 
     [author] => Signature Object
         (
             [name] => Marco Sirabella
             [email] => marco@sirabella.org
+            [when] => DateTime Object
+                (
+                    [date] => 2021-04-02 17:28:23.000000
+                    [timezone_type] => 1
+                    [timezone] => -07:00
+                )
+
         )
 
 )

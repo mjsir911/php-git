@@ -23,6 +23,13 @@ Array
                 (
                     [name] => Marco Sirabella
                     [email] => marco@sirabella.org
+                    [when] => DateTime Object
+                        (
+                            [date] => 2021-04-07 08:51:04.000000
+                            [timezone_type] => 1
+                            [timezone] => -07:00
+                        )
+
                 )
 
             [message] => What happens when I have two tags on a commit?
@@ -42,12 +49,26 @@ To be clear, this license file only applies to the test repository
                 (
                     [name] => Marco Sirabella
                     [email] => marco@sirabella.org
+                    [when] => DateTime Object
+                        (
+                            [date] => 2021-04-03 00:58:33.000000
+                            [timezone_type] => 1
+                            [timezone] => -07:00
+                        )
+
                 )
 
             [author] => Signature Object
                 (
                     [name] => Marco Sirabella
                     [email] => marco@sirabella.org
+                    [when] => DateTime Object
+                        (
+                            [date] => 2021-04-03 00:58:33.000000
+                            [timezone_type] => 1
+                            [timezone] => -07:00
+                        )
+
                 )
 
         )
@@ -60,6 +81,13 @@ To be clear, this license file only applies to the test repository
                 (
                     [name] => Marco Sirabella
                     [email] => marco@sirabella.org
+                    [when] => DateTime Object
+                        (
+                            [date] => 2021-04-07 08:37:26.000000
+                            [timezone_type] => 1
+                            [timezone] => -07:00
+                        )
+
                 )
 
             [message] => This is version 0.0!

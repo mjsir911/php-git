@@ -28,6 +28,13 @@ Signature Object
 (
     [name] => Marco Sirabella
     [email] => marco@sirabella.org
+    [when] => DateTime Object
+        (
+            [date] => 2021-04-07 08:37:26.000000
+            [timezone_type] => 1
+            [timezone] => -07:00
+        )
+
 )
 This is version 0.0!
 

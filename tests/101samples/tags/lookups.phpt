@@ -24,6 +24,13 @@ Tag Object
         (
             [name] => Marco Sirabella
             [email] => marco@sirabella.org
+            [when] => DateTime Object
+                (
+                    [date] => 2021-04-07 08:51:04.000000
+                    [timezone_type] => 1
+                    [timezone] => -07:00
+                )
+
         )
 
     [message] => What happens when I have two tags on a commit?
