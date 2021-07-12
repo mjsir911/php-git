@@ -21,6 +21,8 @@ Array
             [name] => 0.0
             [tagger] => Signature Object
                 (
+                    [name] => Marco Sirabella
+                    [email] => marco@sirabella.org
                 )
 
             [message] => This is version 0.0!

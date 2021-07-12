@@ -21,6 +21,8 @@ Array
             [name] => neg_1
             [tagger] => Signature Object
                 (
+                    [name] => Marco Sirabella
+                    [email] => marco@sirabella.org
                 )
 
             [message] => What happens when I have two tags on a commit?
@@ -37,6 +39,8 @@ Array
             [name] => 0.0
             [tagger] => Signature Object
                 (
+                    [name] => Marco Sirabella
+                    [email] => marco@sirabella.org
                 )
 
             [message] => This is version 0.0!

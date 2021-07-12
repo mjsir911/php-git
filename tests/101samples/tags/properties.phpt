@@ -26,6 +26,8 @@ Commit
 0.0
 Signature Object
 (
+    [name] => Marco Sirabella
+    [email] => marco@sirabella.org
 )
 This is version 0.0!
 
