@@ -1,4 +1,5 @@
 #include <php.h>
+#include <zend_interfaces.h>
 #include <git2/refs.h>
 #include "reference.h"
 #include "oid.h"
@@ -104,4 +105,16 @@ ZEND_METHOD(git_Reference, shorthand) {
 	reference_t *ref = Z_REFERENCE_P(ZEND_THIS);
 
 	RETURN_STRING(git_reference_shorthand(O(ref)));
+}
+
+ZEND_METHOD(git_Reference, __debugInfo) {
+       ZEND_PARSE_PARAMETERS_NONE();
+
+       zval shorthand, peel;
+       array_init(return_value);
+
+       zend_call_method_with_0_params(Z_OBJ_P(ZEND_THIS), Z_OBJCE_P(ZEND_THIS), NULL, "shorthand", &shorthand);
+       add_assoc_zval(return_value, "name", &shorthand);
+       zend_call_method_with_0_params(Z_OBJ_P(ZEND_THIS), Z_OBJCE_P(ZEND_THIS), NULL, "peel", &peel);
+       add_assoc_zval(return_value, "peel", &peel);
 }

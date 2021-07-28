@@ -13,6 +13,7 @@ namespace git {
 
 		/** @alias git\Reference::shorthand */
 		public function __toString(): string {} // for polymorphism with Commit
+		public function __debugInfo(): array {}
 	}
 }
 ?>
