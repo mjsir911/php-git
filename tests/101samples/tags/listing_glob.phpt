@@ -15,24 +15,27 @@ print_r($repo->tags("v0.*"));
 --EXPECT--
 Array
 (
-    [v0.0] => Tag Object
+    [v0.0] => Reference Object
         (
-            [id] => 27a4130
-            [name] => 0.0
-            [tagger] => Signature Object
+            [name] => v0.0
+            [peel] => Tag Object
                 (
-                    [name] => Marco Sirabella
-                    [email] => marco@sirabella.org
-                    [when] => DateTime Object
+                    [id] => 27a4130
+                    [name] => 0.0
+                    [tagger] => Signature Object
                         (
-                            [date] => 2021-04-07 08:37:26.000000
-                            [timezone_type] => 1
-                            [timezone] => -07:00
+                            [name] => Marco Sirabella
+                            [email] => marco@sirabella.org
+                            [when] => DateTime Object
+                                (
+                                    [date] => 2021-04-07 08:37:26.000000
+                                    [timezone_type] => 1
+                                    [timezone] => -07:00
+                                )
+
                         )
 
-                )
-
-            [message] => This is version 0.0!
+                    [message] => This is version 0.0!
 
 There is nothing here
 
@@ -42,11 +45,13 @@ version releases?
 from git-tag(1), but what are lightweight tags for? "are meant for
 private or temporary object labels"? ok
 
-            [time] => DateTime Object
-                (
-                    [date] => 2021-04-07 08:37:26.000000
-                    [timezone_type] => 1
-                    [timezone] => -07:00
+                    [time] => DateTime Object
+                        (
+                            [date] => 2021-04-07 08:37:26.000000
+                            [timezone_type] => 1
+                            [timezone] => -07:00
+                        )
+
                 )
 
         )

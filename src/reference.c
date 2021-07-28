@@ -1,6 +1,7 @@
 #include <php.h>
 #include <zend_interfaces.h>
 #include <git2/refs.h>
+#include <git2/errors.h>
 #include "reference.h"
 #include "oid.h"
 #include "repository.h"
@@ -87,7 +88,8 @@ ZEND_METHOD(git_Reference, peel) {
 	reference_t *this = Z_REFERENCE_P(ZEND_THIS);
 
 	git_object *obj;
-	git_reference_peel(&obj, O(this), GIT_OBJECT_ANY);
+	if (git_reference_peel(&obj, O(this), GIT_OBJECT_TAG) == GIT_EINVALIDSPEC)
+		git_reference_peel(&obj, O(this), GIT_OBJECT_ANY);
 	object_init_ex(return_value, oid_class_entry);
 	RETURN_OBJ(php_git2_object_dispatch_new(obj));
 }

@@ -5,6 +5,7 @@
 #include <git2/strarray.h>
 #include <git2/revparse.h>
 #include <git2/repository.h>
+#include <git2/refs.h>
 #include "tag.h"
 #include "oid.h"
 #include "repository.h"
@@ -28,6 +29,7 @@ ZEND_METHOD(git_Tag, lookup) {
 		RETURN_NULL();
 }
 
+#include "reference.h"
 ZEND_METHOD(git_Tag, list) {
 	zval *repo_dp;
 	zend_string *pattern = NULL;
@@ -45,11 +47,11 @@ ZEND_METHOD(git_Tag, list) {
 
 	array_init(return_value);
 	for (char *const *tag = tags.strings; tag < tags.strings + tags.count; tag++) {
-		git_object *obj;
-		git_revparse_single(&obj, O(repo), *tag);
-
 		zval tmp;
-		ZVAL_OBJ(&tmp, php_git2_object_dispatch_new(obj));
+		object_init_ex(&tmp, reference_class_entry);
+		if GE(git_reference_dwim(&O(Z_REFERENCE_P(&tmp)), O(repo), *tag))
+			RETURN_THROWS();
+
 		add_assoc_zval(return_value, *tag, &tmp);
 	}
 }
