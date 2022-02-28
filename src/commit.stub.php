@@ -22,7 +22,7 @@ namespace git {
 		/** @alias git\Commit::short_id */
 		public function shorthand(): string {} // for polymorphism with Reference
 
-		public function __toString(): Oid {}
+		public function __toString(): string {}
 		public function __debugInfo(): array {}
 	}
 }
